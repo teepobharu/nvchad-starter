@@ -147,9 +147,70 @@ map('n', '<leader>S', "<cmd>SSave<CR>", { desc = "Save Session" })
       require("gitsigns").diffthis()
   end, { desc = "Diff this" })
 
+--   # which key migrate .nvim $HOME/.config/nvim/keys/which-key.vim
+-- files
+  -- copy relative filepath name 
+  map('n', '<localleader>nf', ':let @+=@%<CR>', { desc = "Copy relative filepath name" })
+  -- copy absolute filepath 
+  map('n', '<localleader>nF', ':let @+=expand("%:p")<CR>', { desc = "Copy absolute filepath" })
+
+map('n', '<localleader>rl', ':luafile %<CR>', { desc = "Reload Lua file" })
+-- map('n', 'localleader>rp', ':python3 %<CR>', { desc = "Run Python3" })
+
+
 -- Fugitive
 -- 
 -- fugitive
+--
+      -- \ 'a' : [':Git add .'                        , '~Add all'],
+      -- \ 'A' : [':Git add %'                        , 'add current'],
+      -- \ 'b' : [':Git blame'                        , '~blame'],
+      -- \ 'B' : [':GBrowse'                          , 'browse'],
+      -- \ 'c' : [':Git commit'                       , 'commit'],
+      -- \ 'D' : [':Git diff'                         , 'Diff'],
+      -- \ 'd' : [':Gdiffsplit!'                       , '~Diffsplit3'],
+      -- \ ']' : [':Gdiffsplit'                       , 'Diffsplit'],
+      -- \ 'f' : [':Gfetch'                           , '~Fetch'],
+      -- \ 'M' : [':Gitmerge origin master'           , 'merge master'],
+      -- \ 'g' : [':GGrep'                            , 'git grep'],
+      -- \ 'o' : [':GitGutterLineHighlightsToggle'    , 'highlight hunks'],
+      -- \ ';' : [':GremoveConflictMarkers', 'Git Get (Both)'],
+      -- \ 'h' : [':diffget //2'                      , 'GetMergeCurr (L)'],
+      -- \ 'H' : ['<Plug>(GitGutterPreviewHunk)'      , 'preview hunk'],
+      -- \ 'j' : ['<Plug>(GitGutterNextHunk)'         , 'next hunk'],
+      -- \ 'k' : ['<Plug>(GitGutterPrevHunk)'         , 'prev hunk'],
+      -- \ 'l' : [':diffget //3'                      , '~GetMergeInc (R)'],
+      -- \ 'L' : [':Git log'                          , 'log'],
+      -- \ 'p' : [':Git push'                         , '~Push'],
+      -- \ 'P' : [':Git pull'                         , '~Pull'],
+      -- \ 'r' : [':GRemove'                          , 'remove'],
+      -- \ 's' : [':Git'                          , 'Status'],
+      -- \ 'S' : ['<Plug>(GitGutterStageHunk)'        , 'stage hunk'],
+      -- \ 't' : [':GitGutterSignsToggle'             , 'toggle signs'],
+      -- \ 'u' : ['<Plug>(GitGutterUndoHunk)'         , 'undo hunk'],
+      -- \ 'v' : [':GV'                               , 'view commits'],
+      -- \ 'V' : [':GV!'                              , 'view buffer commits'],
+-- above convert from whichkey vim to lua  settings
+map("n", "<leader>ga", ":Git add %:p<cr><cr>", {silent = true, desc = "Add current"})
+map("n", "<leader>gd", ":Gdiff<cr>", {silent = true, desc = "Diff"})
+map("n", "<leader>gf", ":Telescope git_commits<cr>", {silent = true, desc = "Git Commits"})
+map("n", "<leader>gl", ":Git log<cr>", {silent = true, desc = "Git Log"})
+map("n", "<leader>gp", ":Git push<cr>", {silent = true, desc = "Git Push"})
+map("n", "<leader>gr", ":Git rebase<cr>", {silent = true, desc = "Git Rebase"})
+map("n", "<leader>gs", ":Git<cr>", {silent = true, desc = "Git Status"})
+map("n", "<leader>gb", ":Git blame<cr>", {silent = true, desc = "Git Blame"})
+map("n", "<leader>gc", ":Git commit<cr>", {silent = true, desc = "Git Commit"})
+map("n", "<leader>gw", ":Gwrite<cr>", {silent = true, desc = "Git Write"})
+map("n", "<leader>ge", ":Gedit<cr>", {silent = true, desc = "Git Edit"})
+map("n", "<leader>gs", ":Gitsigns stage_hunk<cr>", {silent = true, desc = "Stage Hunk"})
+map("n", "<leader>gf", ":Git fetch<cr>", {silent = true, desc = "Git Fetch"})
+map("n", "[c", ":Gitsigns next_hunk<cr>", {silent = true, desc = "Next Hunk"})
+map("n", "]c", ":Gitsigns prev_hunk<cr>", {silent = true, desc = "Prev Hunk"})
+
+-- map("n", "<leader>gf", ":Commits<cr>", {silent = true, desc = "Git Commits"})
+-- map("n", "<leader>gf", ":Commits<cr>", {silent = true, desc = "Git Commits"})
+
+
   map("n", "<leader>gg", ":Git<cr>", {silent = true})
   map("n", "<leader>ga", ":Git add %:p<cr><cr>", {silent = true})
   map("n", "<leader>gd", ":Gdiff<cr>", {silent = true})

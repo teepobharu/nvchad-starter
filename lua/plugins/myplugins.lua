@@ -212,17 +212,18 @@ local plugins = {
       local wk = require("which-key")
       wk.setup(opts)
       wk.register({
+        ["g"] = { "~Git"},
         ["<leader>m"] = { "m mapping" },
         ["<leader>n"] = {
           name = "MY custom commands",
-        },
-        ["<leader>nn"] = {
-          "<cmd>source $MYVIMRC<CR>",
-          "Source Config"
-        },
-        ["<leader>ns"] = {
-          "<cmd>set number!<CR>",
-          "Toggle Line Numbers"
+          ["<leader>nn"] = {
+            "<cmd>source $MYVIMRC<CR>",
+            "Source Config"
+          },
+          ["<leader>ns"] = {
+            "<cmd>set number!<CR>",
+            "Toggle Line Numbers"
+          },
         },
         ["<leader>s"] = {
           "<cmd>Telescope find_files<CR>",
