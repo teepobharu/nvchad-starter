@@ -116,6 +116,7 @@ map('n', '<leader>s', "<cmd>Telescope<CR>", { desc = "Telescope" })
 map('n', '<leader>S', "<cmd>SSave<CR>", { desc = "Save Session" })
 
 -- Git signs
+-- not work when inside tumx even no keys mapped ??
   map('n', '<C-S-j>', function()
       if vim.wo.diff then
           return "]c"
@@ -154,7 +155,7 @@ map('n', '<leader>S', "<cmd>SSave<CR>", { desc = "Save Session" })
   -- copy absolute filepath 
   map('n', '<localleader>nF', ':let @+=expand("%:p")<CR>', { desc = "Copy absolute filepath" })
 
-map('n', '<localleader>rl', ':luafile %<CR>', { desc = "Reload Lua file" })
+  map('n', '<localleader>rl', ':luafile %<CR>', { desc = "Reload Lua file" })
 -- map('n', 'localleader>rp', ':python3 %<CR>', { desc = "Run Python3" })
 
 
