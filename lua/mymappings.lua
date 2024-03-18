@@ -207,7 +207,7 @@ map("n", "<leader>gf", ":Telescope git_commits<cr>", {silent = true, desc = "Git
 map("n", "<leader>gl", ":Git log<cr>", {silent = true, desc = "Git Log"})
 map("n", "<leader>gp", ":Git push<cr>", {silent = true, desc = "Git Push"})
 map("n", "<leader>gr", ":Git rebase<cr>", {silent = true, desc = "Git Rebase"})
-map("n", "<leader>gs", ":Git<cr>", {silent = true, desc = "Git Status"})
+map("n", "<leader>gz", ":Git<cr>", {silent = true, desc = "Git Status"})
 map("n", "<leader>gb", ":Git blame<cr>", {silent = true, desc = "Git Blame"})
 map("n", "<leader>gc", ":Git commit<cr>", {silent = true, desc = "Git Commit"})
 map("n", "<leader>gw", ":Gwrite<cr>", {silent = true, desc = "Git Write"})
@@ -216,7 +216,7 @@ map("n", "<leader>gs", ":Gitsigns stage_hunk<cr>", {silent = true, desc = "Stage
 map("n", "<leader>gf", ":Git fetch<cr>", {silent = true, desc = "Git Fetch"})
 map("n", "[c", ":Gitsigns next_hunk<cr>", {silent = true, desc = "Next Hunk"})
 map("n", "]c", ":Gitsigns prev_hunk<cr>", {silent = true, desc = "Prev Hunk"})
-map("n", "<leader>gg", ":Git status<cr>", {silent = true})
+map("n", "<leader>gg", ":Git<cr>", {silent = true})
 
 -- ====================
 -- Custom commands 
