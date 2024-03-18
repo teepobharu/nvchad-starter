@@ -238,6 +238,12 @@ map('n', 'gx', function()
   -- fallback to send gx if not a link or file
   vim.fn.jobstart({ open_command, url_repo() }, { detach = true })
 end, { silent = true, desc = "Open url" })
+
+
+overrides = require('configs.overrides')
+
+map('n', '<leader>fs', overrides.telescope.session_pickers, { desc = "Session PickersF" })
+
     -- map('n', '<leader>gs', '<cmd>Git<cr>', { desc = "Git Status" })
     -- map('n', '<leader>gb', '<cmd>Git blame<cr>', { desc = "Git Blame" })
     -- map('n', '<leader>gc', '<cmd>Git commit<cr>', { desc = "Git Commit" })
