@@ -26,17 +26,23 @@ map({"n" }, "<Down>", ":resize +2<CR>", opts)
 map({"n"}, "<Left>", "<cmd>vertical resize -2<CR>", opts)
 map({"n"}, "<Right>", "<cmd>vertical resize +2<CR>", opts)
 
--- Tmux navigation
+-- Tmux navigation - move to plugins config
+--
+map("n", "<C-k>", "<cmd>NvimTmuxNavigateUp<cr>", opts)
+map("n", "<C-j>", "<cmd>NvimTmuxNavigateDown<cr>", opts)
+map("n", "<C-h>", "<cmd>NvimTmuxNavigateLeft<cr>", opts)
+map("n", "<C-l>", "<cmd>NvimTmuxNavigateRight<cr>", opts)
+-- nv2 config tmux - old function maper
 -- keymap("nvt", "<C-l>", "<cmd>TmuxNavigateLeft<cr>", opts)
 -- keymap("nv", "<C-j>", "<cmd>TmuxNavigateUp<cr>")
 -- keymap("n", "<C-k>", "<cmd>TmuxNavigateDown<cr>")
 -- keymap("t", "<C-k>", "<cmd>TmuxNavigateDown<cr>")
 -- keymap("t", "<C-j>", "<cmd>TmuxNavigateDown<cr>")
 
-map({"n" ,"t" ,"v"}, "<C-k>", "<cmd>TmuxNavigateUp<cr>")
-map({"n" ,"t" ,"v"}, "<C-j>", "<cmd>TmuxNavigateDown<cr>")
-map({"n" ,"t" ,"v"}, "<C-h>", "<cmd>TmuxNavigateLeft<cr>")
-map({"n" ,"t" ,"v"}, "<C-l>", "<cmd>TmuxNavigateRight<cr>")
+-- map({"n" ,"t" ,"v"}, "<C-k>", "<cmd>TmuxNavigateUp<cr>")
+-- map({"n" ,"t" ,"v"}, "<C-j>", "<cmd>TmuxNavigateDown<cr>")
+-- map({"n" ,"t" ,"v"}, "<C-h>", "<cmd>TmuxNavigateLeft<cr>")
+-- map({"n" ,"t" ,"v"}, "<C-l>", "<cmd>TmuxNavigateRight<cr>")
 -- map("t", "<C-k>", "<cmd>TmuxNavigateUp<cr>")
 -- map("t", "<C-j>", "<cmd>TmuxNavigateDown<cr>")
 
@@ -149,6 +155,9 @@ map('n', '<leader>S', "<cmd>SSave<CR>", { desc = "Save Session" })
   end, { desc = "Diff this" })
 
 --   # which key migrate .nvim $HOME/.config/nvim/keys/which-key.vim
+----- LOCALLEADER ==========================
+map('n', '<localleader>w', ':w<CR>', { desc = "Save file" })
+map('n', '<localleader>X', ':qall!<CR>', { desc = "Close All" })
 -- files
   -- copy relative filepath name 
   map('n', '<localleader>nf', ':let @+=@%<CR>', { desc = "Copy relative filepath name" })
@@ -207,18 +216,28 @@ map("n", "<leader>gs", ":Gitsigns stage_hunk<cr>", {silent = true, desc = "Stage
 map("n", "<leader>gf", ":Git fetch<cr>", {silent = true, desc = "Git Fetch"})
 map("n", "[c", ":Gitsigns next_hunk<cr>", {silent = true, desc = "Next Hunk"})
 map("n", "]c", ":Gitsigns prev_hunk<cr>", {silent = true, desc = "Prev Hunk"})
+map("n", "<leader>gg", ":Git status<cr>", {silent = true})
 
--- map("n", "<leader>gf", ":Commits<cr>", {silent = true, desc = "Git Commits"})
--- map("n", "<leader>gf", ":Commits<cr>", {silent = true, desc = "Git Commits"})
+-- ====================
+-- Custom commands 
+-- ====================
+local open_command = 'xdg-open'
+if vim.fn.has('mac') == 1 then
+  open_command = 'open'
+end
 
+local function url_repo()
+  local cursorword = vim.fn.expand('<cfile>')
+  if string.find(cursorword, '^[a-zA-Z0-9-_.]*/[a-zA-Z0-9-_.]*$') then
+    cursorword = 'https://github.com/' .. cursorword
+  end
+  return cursorword or ''
+end
 
-  map("n", "<leader>gg", ":Git<cr>", {silent = true})
-  map("n", "<leader>ga", ":Git add %:p<cr><cr>", {silent = true})
-  map("n", "<leader>gd", ":Gdiff<cr>", {silent = true})
-  map("n", "<leader>ge", ":Gedit<cr>", {silent = true})
-  map("n", "<leader>gw", ":Gwrite<cr>", {silent = true})
-  map("n", "<leader>gf", ":Commits<cr>", {silent = true})
-
+map('n', 'gx', function()
+  -- fallback to send gx if not a link or file
+  vim.fn.jobstart({ open_command, url_repo() }, { detach = true })
+end, { silent = true, desc = "Open url" })
     -- map('n', '<leader>gs', '<cmd>Git<cr>', { desc = "Git Status" })
     -- map('n', '<leader>gb', '<cmd>Git blame<cr>', { desc = "Git Blame" })
     -- map('n', '<leader>gc', '<cmd>Git commit<cr>', { desc = "Git Commit" })
