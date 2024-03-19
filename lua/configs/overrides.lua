@@ -61,12 +61,6 @@ M.telescope = {
 
         local actions = require('telescope.actions')
 
-        actions.select_default:replace(function(prompt_bufnr)
-          local entry = actions.get_selected_entry(prompt_bufnr)
-          if entry then
-            vim.cmd('SSave ' .. entry.value)
-          end
-        end)
 
         -- add key map for loadding with SLoad when press C-enter
         -- actions.select_default:replace(function(prompt_bufnr)
@@ -83,11 +77,25 @@ M.telescope = {
             --   print "You typed asdf"
             -- end)
       --
+        actions.select_default:replace(function(_prompt_bufnr)
+          local entry = action_state.get_selected_entry()
+          if entry then
+             vim.cmd('SLoad ' .. entry.value)
+          end
+        end)
           map('i', '<C-s>', function(_prompt_bufnr)
               print "Saving"
             local entry = action_state.get_selected_entry()
             if entry then
               vim.cmd('SSave ' .. entry.value)
+              end
+            end)
+
+          map('i', '<C-l>', function(_prompt_bufnr)
+              print "typed C-L"
+            local entry = action_state.get_selected_entry()
+            if entry then
+              vim.cmd('SLoad ' .. entry.value)
               end
             end)
 
