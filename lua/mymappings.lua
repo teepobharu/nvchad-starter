@@ -32,6 +32,11 @@ map("n", "<C-k>", "<cmd>NvimTmuxNavigateUp<cr>", opts)
 map("n", "<C-j>", "<cmd>NvimTmuxNavigateDown<cr>", opts)
 map("n", "<C-h>", "<cmd>NvimTmuxNavigateLeft<cr>", opts)
 map("n", "<C-l>", "<cmd>NvimTmuxNavigateRight<cr>", opts)
+
+map("t", "<C-k>", "<cmd>NvimTmuxNavigateUp<cr>", opts)
+map("t", "<C-j>", "<cmd>NvimTmuxNavigateDown<cr>", opts)
+map("t", "<C-h>", "<cmd>NvimTmuxNavigateLeft<cr>", opts)
+map("t", "<C-l>", "<cmd>NvimTmuxNavigateRight<cr>", opts)
 -- nv2 config tmux - old function maper
 -- keymap("nvt", "<C-l>", "<cmd>TmuxNavigateLeft<cr>", opts)
 -- keymap("nv", "<C-j>", "<cmd>TmuxNavigateUp<cr>")
