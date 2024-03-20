@@ -1,18 +1,28 @@
-local opts = { noremap = true, silent = true }
-local term_opts = { silent = true }
+-- " Mapping guide
+-- ====================================
 
-local keymap = vim.api.nvim_set_keymap
+local opts = { noremap = true, silent = true }
+-- local keymap = vim.api.nvim_set_keymap
 local map = vim.keymap.set
+overrides = require('configs.overrides')
 
 -- Setup keys 
 -- check using :letmapleader or :let maplocalleader
 -- -> need to put inside plugins mapping also to make it work on those mapping
 -- vim.g.maplocalleader = ","
--- HANDLE TAB TIPS in lua : https://github.com/nanotee/nvim-lua-guide#tips-4
+-- HANDLE tab cmp completion in lua : https://github.com/nanotee/nvim-lua-guide#tips-4
 -- Debug
 
-map('n', '<Leader>nm', [[:redir @a<CR>:messages<CR>:redir END<CR>:put! a<CR>]], { noremap = true, silent = true, desc = 'Print messages' })
+map('n', '<M-Tab>', ':tabnext<CR>', { noremap = true, silent = true })
+-- command completion
+-- map('c', "<C-P>", function() wildmenumode() ? "<C-P>" : "<Up>" end, { noremap = true, silent = true })
+-- map('c', "<C-N>", function() wildmenumode() ? "<C-N>" : "<Down>" end , { noremap = true, silent = true })
+--
 
+vim.cmd([[
+  cnoremap <expr> <C-j> wildmenumode() ? "\<C-N>" : "\<C-j>"
+  cnoremap <expr> <C-k> wildmenumode() ? "\<C-P>" : "\<C-k>"
+]])
 
 -- Resize with arrows
 map("n", "<C-Up>", ":resize -2<CR>", opts)
@@ -21,10 +31,10 @@ map("n", "<C-Left>", ":vertical resize -2<CR>", opts)
 map("n", "<C-Right>", ":vertical resize +2<CR>", opts)
 
 -- Resize with ESC keys - up down use for auto cmpl
-map({"n" }, "<Up>", ":resize -2<CR>", opts)
-map({"n" }, "<Down>", ":resize +2<CR>", opts)
-map({"n"}, "<Left>", "<cmd>vertical resize -2<CR>", opts)
-map({"n"}, "<Right>", "<cmd>vertical resize +2<CR>", opts)
+map("n", "<Up>", ":resize -2<CR>", opts)
+map("n", "<Down>", ":resize +2<CR>", opts)
+map("n", "<Left>", "<cmd>vertical resize -2<CR>", opts)
+map("n", "<Right>", "<cmd>vertical resize +2<CR>", opts)
 
 -- Tmux navigation - move to plugins config
 --
@@ -100,6 +110,9 @@ map('v', '>', '>gv', { desc = "Better Indent right" })
 map('v', '<', '<gv', { desc = "Better Indent left" })
 map('v', '//', 'y/\\V<C-R>=escape(@\",\'/\\\')<CR><CR>', { desc = "Search selected visual" })
 
+--==========================
+-- TELESCOPE ---
+--==========================
 map('n', '<leader>fr', function()
     require('telescope.builtin').lsp_references()
 end, { desc = "LSP Find References" })
@@ -121,61 +134,73 @@ map('n', '<leader>fg', function()
     end
 end, { desc = "LSP Find Files Git" })
 
-map('n', '<leader>n', "", { desc = "+CustomCommands" })
-map('n', '<leader>nn', "<cmd>so $MYVIMRC<CR>", { desc = "Source Config" })
-map('n', '<leader>s', "<cmd>Telescope<CR>", { desc = "Telescope" })
-map('n', '<leader>S', "<cmd>SSave<CR>", { desc = "Save Session" })
-
--- Git signs
+map('n', '<leader>tt', "<cmd>Telescope<CR>", { desc = "Telescope" })
+map('n', '<leader>fs', overrides.telescope.session_pickers, { desc = "Session PickersF" })
+-- ===============================================
+-- =============  GIT =============================
+-- ===============================================
+--
+--  Sample workflow : https://www.youtube.com/watch?v=IyBAuDPzdFY&t=213s&ab_channel=DevOpsToolbox
+--  gitsigns : https://github.com/lewis6991/gitsigns.nvim
+--  fugitive : 
+--
+-- ===============================
+-- 1.  Git signs
+-- ===============================
 -- not work when inside tumx even no keys mapped ??
-  map('n', '<C-S-j>', function()
-      if vim.wo.diff then
-          return "]c"
-      end
-      vim.schedule(function()
-          require("gitsigns").next_hunk()
-      end)
-      return "<Ignore>"
-  end, { desc = "Jump to next hunk", expr = true })
+-- map('n', '<C-S-j>', function()
+function gitsigns_jump_next_hunk()
+    if vim.wo.diff then
+        return "[c"
+    end
+    vim.schedule(function() require("gitsigns").next_hunk() end)
+    return "<Ignore>"
+end
+function gitsigns_jump_prev_hunk()
+    if vim.wo.diff then
+        return "[c"
+    end
+    vim.schedule(function() require("gitsigns").prev_hunk() end)
+    return "<Ignore>"
+end
+  map('n', '<C-S-j>', gitsigns_jump_next_hunk, { desc = "Jump to next hunk", expr = true })
+  map('n', '<C-M-j>', gitsigns_jump_next_hunk, { desc = "Jump to next hunk", expr = true })
+  map('n', '<C-S-k>', gitsigns_jump_prev_hunk, { desc = "Jump to prev hunk", expr = true })
+  map('n', '<C-M-k>', gitsigns_jump_prev_hunk, { desc = "Jump to prev hunk", expr = true })
 
-  map('n', '<C-S-k>', function()
-      if vim.wo.diff then
-          return "[c"
-      end
-      vim.schedule(function()
-          require("gitsigns").prev_hunk()
-      end)
-      return "<Ignore>"
-  end, { desc = "Jump to prev hunk", expr = true })
-  map('n', '<M-z>', function()
-      require("gitsigns").reset_hunk()
-  end, { desc = "Reset hunk" })
-
-  map('n', '<leader>gr', function()
-      require("gitsigns").reset_hunk()
-  end, { desc = "Reset hunk" })
-
-  map('n', '<leader>gd', function()
-      require("gitsigns").diffthis()
-  end, { desc = "Diff this" })
-
---   # which key migrate .nvim $HOME/.config/nvim/keys/which-key.vim
------ LOCALLEADER ==========================
-map('n', '<localleader>w', ':w<CR>', { desc = "Save file" })
-map('n', '<localleader>X', ':qall!<CR>', { desc = "Close All" })
--- files
-  -- copy relative filepath name 
-  map('n', '<localleader>nf', ':let @+=@%<CR>', { desc = "Copy relative filepath name" })
-  -- copy absolute filepath 
-  map('n', '<localleader>nF', ':let @+=expand("%:p")<CR>', { desc = "Copy absolute filepath" })
-
-  map('n', '<localleader>rl', ':luafile %<CR>', { desc = "Reload Lua file" })
--- map('n', 'localleader>rp', ':python3 %<CR>', { desc = "Run Python3" })
+  map('n', '<M-z>', function() require("gitsigns").reset_hunk() end, { desc = "Reset hunk" })
+  map('v', '<M-z>', ":Gitsigns reset_hunk<cr>", { desc = "Reset hunk" })
 
 
--- Fugitive
--- 
--- fugitive
+
+-- ===============================
+-- 2. Fugitive
+-- ===============================
+vim.cmd[[
+  " Support worktree bare repo: https://github.com/tpope/vim-fugitive/issues/1841
+  function! s:SetGitDir() abort
+  " Check if Fugitive is loaded
+  if !exists(':Git')
+  return
+  endif
+
+  let l:cwd = getcwd()
+  let l:home = $HOME
+
+  " Check if the current directory is the home directory
+  if l:cwd ==# l:home
+  let b:test = 1
+  let l:git_dir = l:home . '/.cfg'
+  call FugitiveDetect(l:git_dir, l:cwd)
+  echom 'Set FugitiveDetect in ' . l:git_dir
+  endif
+  endfunction
+
+  augroup SetGitDir
+  autocmd!
+  autocmd DirChanged * call s:SetGitDir()
+  augroup END
+]]
 --
       -- \ 'a' : [':Git add .'                        , '~Add all'],
       -- \ 'A' : [':Git add %'                        , 'add current'],
@@ -208,24 +233,49 @@ map('n', '<localleader>X', ':qall!<CR>', { desc = "Close All" })
 -- above convert from whichkey vim to lua  settings
 map("n", "<leader>ga", ":Git add %:p<cr><cr>", {silent = true, desc = "Add current"})
 map("n", "<leader>gd", ":Gdiff<cr>", {silent = true, desc = "Diff"})
+map('n', '<leader>gd', ':Gitsigns preview_hunk_inline<cr>' , { desc = "Preview Hunk inline" })
+map('n', '<leader>gd.', ':Gitsigns preview_hunk_inline<cr>' , { desc = "Preview Hunk inline" })
+map('n', '<leader>gdv', ':Gvdiffsplit<CR>' , { desc = "V Diff" })
+map('n', '<leader>gds', ':Gdiffsplit<CR>' , { desc = "S Diff" })
+map('n', '<leader>gdm', ':Gitsigns diffthis "~"<CR>' , { desc = "Diff master" })
 map("n", "<leader>gf", ":Telescope git_commits<cr>", {silent = true, desc = "Git Commits"})
 map("n", "<leader>gl", ":Git log<cr>", {silent = true, desc = "Git Log"})
 map("n", "<leader>gp", ":Git push<cr>", {silent = true, desc = "Git Push"})
-map("n", "<leader>gr", ":Git rebase<cr>", {silent = true, desc = "Git Rebase"})
+map("n", "<leader>gr", ":Gitsigns reset_hunk<cr>", {silent = true, desc = "Git Reset Hunk"})
+map("v", "<leader>gr", ":Gitsigns reset_hunk<cr>", {silent = true, desc = "Git Reset Hunk"})
 map("n", "<leader>gz", ":Git<cr>", {silent = true, desc = "Git Status"})
-map("n", "<leader>gb", ":Git blame<cr>", {silent = true, desc = "Git Blame"})
 map("n", "<leader>gc", ":Git commit<cr>", {silent = true, desc = "Git Commit"})
-map("n", "<leader>gw", ":Gwrite<cr>", {silent = true, desc = "Git Write"})
+map("n", "<leader>gw", ":Gwrite<cr>", {silent = true, desc = "Git Add-Write"})
 map("n", "<leader>ge", ":Gedit<cr>", {silent = true, desc = "Git Edit"})
 map("n", "<leader>gs", ":Gitsigns stage_hunk<cr>", {silent = true, desc = "Stage Hunk"})
+map("v", "<leader>gs", ":Gitsigns stage_hunk<cr>", {silent = true, desc = "Stage Hunk"})
+map("n", "<leader>gu", ":Gitsigns undo_stage_hunk<cr>", {silent = true, desc = "Stage Undo Hunk"})
 map("n", "<leader>gf", ":Git fetch<cr>", {silent = true, desc = "Git Fetch"})
-map("n", "[c", ":Gitsigns next_hunk<cr>", {silent = true, desc = "Next Hunk"})
-map("n", "]c", ":Gitsigns prev_hunk<cr>", {silent = true, desc = "Prev Hunk"})
+map("n", "[c", gitsigns_jump_prev_hunk, {silent = true, desc = "Next Hunk"})
+map("n", "]c", gitsigns_jump_next_hunk, {silent = true, desc = "Prev Hunk"})
 map("n", "<leader>gg", ":Git<cr>", {silent = true})
-
+-- more git signs mapping here from NVCHAD : https://github.com/NvChad/NvChad/blob/2e54fce0281cee808c30ba309610abfcb69ee28a/lua/nvchad/configs/gitsigns.lua
+    -- map("n", "<leader>rh", gs.reset_hunk, opts "Reset Hunk")
+    -- map("n", "<leader>ph", gs.preview_hunk, opts "Preview Hunk")
+    -- map("n", "<leader>gb", gs.blame_line, opts "Blame Line")
+map("n", "<leader>gbl", ":Gitsigns toggle_current_line_blame<cr>", {silent = true, desc = "Blame Inline Toggle"})
+-- Gitsigns toggle_current_line_blame
+map("n", "<leader>gbL", ":Git blame<cr>", {silent = true, desc = "Git Blame"})
+map("n", "<leader>gbb", ":Git blame<cr>", {silent = true, desc = "Git Blame"})
+-- Gitsigns diffthis
+--
 -- ====================
 -- Custom commands 
 -- ====================
+map('n', '<leader>n', "", { desc = "+CustomCommands" })
+map('n', '<leader>nn', "<cmd>so $MYVIMRC<CR>", { desc = "Source Config" })
+map('n', '<leader>S', "<cmd>SSave<CR>", { desc = "Save Session" })
+map('n', '<Leader>nm', [[:redir @a<CR>:messages<CR>:redir END<CR>:put! a<CR>]], { noremap = true, silent = true, desc = 'Print messages' })
+  -- copy relative filepath name 
+  map('n', '<leader>nf', ':let @+=@%<CR>', { desc = "Copy relative filepath name" })
+  -- copy absolute filepath 
+  map('n', '<leader>nF', ':let @+=expand("%:p")<CR>', { desc = "Copy absolute filepath" })
+
 local open_command = 'xdg-open'
 if vim.fn.has('mac') == 1 then
   open_command = 'open'
@@ -244,15 +294,10 @@ map('n', 'gx', function()
   vim.fn.jobstart({ open_command, url_repo() }, { detach = true })
 end, { silent = true, desc = "Open url" })
 
-
-overrides = require('configs.overrides')
-
-map('n', '<leader>fs', overrides.telescope.session_pickers, { desc = "Session PickersF" })
-
-    -- map('n', '<leader>gs', '<cmd>Git<cr>', { desc = "Git Status" })
-    -- map('n', '<leader>gb', '<cmd>Git blame<cr>', { desc = "Git Blame" })
-    -- map('n', '<leader>gc', '<cmd>Git commit<cr>', { desc = "Git Commit" })
-    -- map('n', '<leader>gd', '<cmd>Git diff<cr>', { desc = "Git Diff" })
-    -- map('n', '<leader>gl', '<cmd>Git log<cr>', { desc = "Git Log" })
-    -- map('n', '<leader>gp', '<cmd>Git push<cr>', { desc = "Git Push" })
-    -- map('n', '<leader>gr', '<cmd>Git rebase<cr>', { desc = "Git Rebase" })
+----- LOCALLEADER ==========================
+--   # which key migrate .nvim $HOME/.config/nvim/keys/which-key.vim
+map('n', '<localleader>w', ':w<CR>', { desc = "Save file" })
+map('n', '<localleader>X', ':qall!<CR>', { desc = "Close All" })
+-- files
+  map('n', '<localleader>rl', ':luafile %<CR>', { desc = "Reload Lua file" })
+-- map('n', 'localleader>rp', ':python3 %<CR>', { desc = "Run Python3" })

@@ -76,7 +76,6 @@ M.telescope = {
             -- map("i", "asdf", function(_prompt_bufnr)
             --   print "You typed asdf"
             -- end)
-      --
         actions.select_default:replace(function(_prompt_bufnr)
           local entry = action_state.get_selected_entry()
           if entry then

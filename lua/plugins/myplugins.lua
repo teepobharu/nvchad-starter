@@ -217,25 +217,25 @@ local plugins = {
       wk.register({
         ["<leader>g"] = { "~Git"},
         ["<leader>m"] = { "m mapping" },
-        ["<leader>n"] = {
-          name = "MY custom commands",
-          ["<leader>nn"] = {
-            "<cmd>source $MYVIMRC<CR>",
-            "Source Config"
-          },
-          ["<leader>ns"] = {
-            "<cmd>set number!<CR>",
-            "Toggle Line Numbers"
-          },
-        },
-        ["<leader>s"] = {
-          "<cmd>Telescope find_files<CR>",
-          "Telescope - Find Files"
-        },
-        ["<leader>S"] = {
-          "<cmd>Save<CR>",
-          "Save Session"
-        },
+        ["<leader>n"] = {name = "MY custom commands"}
+        --
+        --   ["<leader>nn"] = {
+        --     "<cmd>source $MYVIMRC<CR>",
+        --     "Source Config"
+        --   },
+        --   ["<leader>ns"] = {
+        --     "<cmd>set number!<CR>",
+        --     "Toggle Line Numbers"
+        --   },
+        -- },
+        -- ["<leader>s"] = {
+        --   "<cmd>Telescope find_files<CR>",
+        --   "Telescope - Find Files"
+        -- },
+        -- ["<leader>S"] = {
+        --   "<cmd>Save<CR>",
+        --   "Save Session"
+        -- },
       })
     end,
     -- keys = { "<localleader>"},
@@ -291,14 +291,20 @@ local plugins = {
                     ["<C-l>"] = function(...)
                         require("telescope.actions").results_scrolling_right(...)
                     end, 
-                    ['<c-d>'] = require('telescope.actions').delete_buffer,
+                    ['<C-d>'] = require('telescope.actions').results_scrolling_down,
+                    ['<C-u>'] = require('telescope.actions').results_scrolling_up,
+                    -- ['<c-d>'] = require('telescope.actions').delete_buffer,
                 },
                 -- When the search text is focused 
                 n = {
-                    ['<c-d>'] = require('telescope.actions').delete_buffer,
                     -- name appear when hit ? but not exectuable
                     -- ["<esc>"] = mappingFunction.close_preview,
                     -- ["cd"] = mappingFunction.lcd_preview,
+                    ['X'] = require('telescope.actions').delete_buffer,
+                    ['J'] = require('telescope.actions').results_scrolling_down,
+                    ['K'] = require('telescope.actions').results_scrolling_up,
+                    ['<C-d>'] = require('telescope.actions').results_scrolling_down,
+                    ['<C-u>'] = require('telescope.actions').results_scrolling_up,
                     
                     -- See default mappings / fn name here: https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua#L154
                     ["<C-k>"] = function(...)
@@ -474,3 +480,4 @@ local plugins = {
 --   endif
 
 return plugins
+
