@@ -114,6 +114,7 @@ map('v', '//', 'y/\\V<C-R>=escape(@\",\'/\\\')<CR><CR>', { desc = "Search select
 --==========================
 -- TELESCOPE ---
 --==========================
+map('n', '<leader>ft', "<cmd>Telescope<CR>", { desc = "Telescope" })
 map('n', '<leader>fr', function()
     require('telescope.builtin').lsp_references()
 end, { desc = "LSP Find References" })
@@ -135,7 +136,6 @@ map('n', '<leader>fg', function()
     end
 end, { desc = "LSP Find Files Git" })
 
-map('n', '<leader>tt', "<cmd>Telescope<CR>", { desc = "Telescope" })
 
 local custom_pickers = nil
 

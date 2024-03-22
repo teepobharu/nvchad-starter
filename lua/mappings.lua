@@ -5,7 +5,7 @@ local map = vim.keymap.set
 
 map("n", ";", ":", { desc = "CMD enter command mode" })
 
-map("n", "<leader>fm", function()
+map("", "<leader>fm", function()
     require("conform").format()
 end, { desc = "File Format with conform" })
 

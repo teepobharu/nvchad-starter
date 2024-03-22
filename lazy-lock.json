@@ -29,10 +29,12 @@
   "nvim-web-devicons": { "branch": "master", "commit": "cb0c967c9723a76ccb1be0cc3a9a10e577d2f6ec" },
   "plenary.nvim": { "branch": "master", "commit": "f7adfc4b3f4f91aab6caebf42b3682945fbc35be" },
   "telescope-z.nvim": { "branch": "main", "commit": "3a31d9741fe4353e5c8b59cfc4eda5420dc7f938" },
+  "telescope-zoxide": { "branch": "main", "commit": "68966349aa1b8e9ade403e18479ecf79447389a7" },
   "telescope.nvim": { "branch": "master", "commit": "1fa3b801f034caa609e2570cd2e422cf9416819c" },
   "ui": { "branch": "v2.5", "commit": "eecc070519d133f82b9eaf9b1ed5decb63f017f6" },
   "vim-fugitive": { "branch": "master", "commit": "8d4e8d45385c63a0bf735fe1164772116bf0da0d" },
   "vim-sneak": { "branch": "master", "commit": "c13d0497139b8796ff9c44ddb9bc0dc9770ad2dd" },
   "vim-startify": { "branch": "master", "commit": "4e089dffdad46f3f5593f34362d530e8fe823dcf" },
+  "vim-table-mode": { "branch": "master", "commit": "e4365bde024f73e205eefa2fb78e3029ddb92ea9" },
   "which-key.nvim": { "branch": "main", "commit": "4433e5ec9a507e5097571ed55c02ea9658fb268a" }
 }

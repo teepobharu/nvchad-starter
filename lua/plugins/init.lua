@@ -1,8 +1,5 @@
+-- local utils = require "utils"
+-- lazy will auto load all plugins under plugin folders ... 
 return {
-  {
-    "stevearc/conform.nvim",
-    config = function()
-      require "configs.conform"
-    end,
-  }
+
 }
