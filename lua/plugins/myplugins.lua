@@ -335,13 +335,10 @@ local plugins = {
             },
         }
         opts.defaults = vim.tbl_deep_extend('force', opts.defaults, defaultOverride)
-      map('n', '<leader>fs', function()
-        overrides.telescope.session_pickers()
-      end
-        , { desc = "Startify Sessions" })
-      -- overrides.telescope.session_picker_ext()
 
 
+      local custom_pickers = overrides.telescope.getPickers()
+      -- " Custom pickers loadded in mymappings.lua
       -- Extensions 
       -- extension nvchad example: https://github.com/NvChad/ui/blob/5a910659cffebf9671d0df1f98fb159c13ee9152/lua/telescope/_extensions/themes.lua
 

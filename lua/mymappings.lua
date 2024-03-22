@@ -4,7 +4,7 @@
 local opts = { noremap = true, silent = true }
 -- local keymap = vim.api.nvim_set_keymap
 local map = vim.keymap.set
-overrides = require('configs.overrides')
+local overrides = require('configs.overrides')
 
 -- Setup keys 
 -- check using :letmapleader or :let maplocalleader
@@ -12,7 +12,8 @@ overrides = require('configs.overrides')
 -- vim.g.maplocalleader = ","
 -- HANDLE tab cmp completion in lua : https://github.com/nanotee/nvim-lua-guide#tips-4
 -- Debug
-
+map('n', '<leader>h', ':sp<CR>', { desc = 'HSplit' , silent = true })
+map('n', '<leader>v', ':vs<CR>', { desc = 'VSplit', silent = true })
 map('n', '<M-Tab>', ':tabnext<CR>', { noremap = true, silent = true })
 -- command completion
 -- map('c', "<C-P>", function() wildmenumode() ? "<C-P>" : "<Up>" end, { noremap = true, silent = true })
@@ -135,7 +136,18 @@ map('n', '<leader>fg', function()
 end, { desc = "LSP Find Files Git" })
 
 map('n', '<leader>tt', "<cmd>Telescope<CR>", { desc = "Telescope" })
-map('n', '<leader>fs', overrides.telescope.session_pickers, { desc = "Session PickersF" })
+
+local custom_pickers = nil
+
+local setCustomPickers = function()
+  if not custom_pickers then
+    print("Custom pickers not set")
+    custom_pickers = overrides.telescope.getPickers()
+  end
+end
+-- Telescope custom pickers 
+map('n', '<leader>fs', function() setCustomPickers(); custom_pickers.session_pickers() end , { desc = "Startify Sessions" })
+map('n', '<leader>nz', function() setCustomPickers(); custom_pickers.test_pickers() end, { desc = "Telescope Test Picker" })
 -- ===============================================
 -- =============  GIT =============================
 -- ===============================================
@@ -267,14 +279,49 @@ map("n", "<leader>gbb", ":Git blame<cr>", {silent = true, desc = "Git Blame"})
 -- ====================
 -- Custom commands 
 -- ====================
+
 map('n', '<leader>n', "", { desc = "+CustomCommands" })
 map('n', '<leader>nn', "<cmd>so $MYVIMRC<CR>", { desc = "Source Config" })
 map('n', '<leader>S', "<cmd>SSave<CR>", { desc = "Save Session" })
-map('n', '<Leader>nm', [[:redir @a<CR>:messages<CR>:redir END<CR>:put! a<CR>]], { noremap = true, silent = true, desc = 'Print messages' })
+map('n', '<Leader>nm', ':messages <CR>', { noremap = true, silent = true, desc = 'Print messages' })
+map('n', '<Leader>nM', [[:redir @a<CR>:messages<CR>:redir END<CR>:put! a<CR>]], { noremap = true, silent = true, desc = 'Print messages' })
   -- copy relative filepath name 
   map('n', '<leader>nf', ':let @+=@%<CR>', { desc = "Copy relative filepath name" })
   -- copy absolute filepath 
   map('n', '<leader>nF', ':let @+=expand("%:p")<CR>', { desc = "Copy absolute filepath" })
+
+local function show_messages_window()
+    -- Create a new buffer
+    local buf = vim.api.nvim_create_buf(false, true)
+
+    -- Get the output of the :messages command
+    local messages = vim.split(vim.fn.execute(':messages'), '\n')
+
+    -- Set the buffer lines with the messages
+    vim.api.nvim_buf_set_lines(buf, 0, -1, true, messages)
+
+    -- Calculate the window dimensions and position
+    local width = math.floor(vim.o.columns * 0.8)
+    local height = math.floor(vim.o.lines * 0.8)
+    local row = math.floor((vim.o.lines - height) / 2)
+    local col = math.floor((vim.o.columns - width) / 2)
+
+    -- Create a new window to display the buffer
+    local win = vim.api.nvim_open_win(buf, true, {
+        relative = 'editor',
+        width = width,
+        height = height,
+        row = row,
+        col = col,
+        style = 'minimal',
+        border = 'single',
+    })
+
+    -- Set some options for the window
+    vim.wo[win].wrap = false
+    vim.wo[win].number = false
+    vim.wo[win].relativenumber = false
+end
 
 local open_command = 'xdg-open'
 if vim.fn.has('mac') == 1 then
@@ -294,10 +341,13 @@ map('n', 'gx', function()
   vim.fn.jobstart({ open_command, url_repo() }, { detach = true })
 end, { silent = true, desc = "Open url" })
 
+map('n', '<Leader>nx', function() show_messages_window() end, { noremap = true, silent = true, desc = 'Print messages' })
+
 ----- LOCALLEADER ==========================
 --   # which key migrate .nvim $HOME/.config/nvim/keys/which-key.vim
+map('n', '<localleader>q', ':q<CR>', { desc = "Close" , noremap = true, silent = true })
 map('n', '<localleader>w', ':w<CR>', { desc = "Save file" })
 map('n', '<localleader>X', ':qall!<CR>', { desc = "Close All" })
 -- files
-  map('n', '<localleader>rl', ':luafile %<CR>', { desc = "Reload Lua file" })
+map('n', '<localleader>rl', ':luafile %<CR>', { desc = "Reload Lua file" })
 -- map('n', 'localleader>rp', ':python3 %<CR>', { desc = "Run Python3" })
