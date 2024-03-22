@@ -295,12 +295,12 @@ local plugins = {
 		},
 		config = function()
 			local z_utils = require("telescope._extensions.zoxide.utils")
-
+      local t = require("telescope")
 			-- Configure telescope-zoxide
-			require("telescope").setup({
+			t.setup({
 				extensions = {
 					zoxide = {
-						prompt_title = "[ Walking on the shoulders of TJ ]",
+						prompt_title = "Zoxide ~ CD",
 						mappings = {
 							default = {
 								after_action = function(selection)
@@ -309,7 +309,7 @@ local plugins = {
 							},
 							["<C-s>"] = {
 								before_action = function(selection)
-									print("before C-s")
+									-- print("before C-s")
 								end,
 								action = function(selection)
 									vim.cmd.edit(selection.path)
@@ -323,24 +323,26 @@ local plugins = {
 				},
 				-- https://github.com/jvgrootveld/telescope-zoxide?tab=readme-ov-file
 			})
-      require("telescope").load_extension("zoxide")
-		end,
-	},
-	{
-		"nvim-telescope/telescope-z.nvim",
-		-- no output
-		-- https://github.com/nvim-telescope/telescope-z.nvim
-		-- alternative 1
-		-- https://github.com/jvgrootveld/telescope-zoxide/blob/main/lua/telescope/_extensions/zoxide/list.lua
+      t.load_extension("zoxide")
+      map("n", "<leader>cd", t.extensions.zoxide.list, { desc = "Telescope Zoxide" })
 
-		lazy = true,
-		config = function()
-			require("telescope").load_extension("z")
 		end,
-		opts = {
-			cmd = { vim.o.shell, "-c", "zoxide query -l" },
-		},
 	},
+	-- {
+	-- 	"nvim-telescope/telescope-z.nvim",
+	-- 	-- no output
+	-- 	-- https://github.com/nvim-telescope/telescope-z.nvim
+	-- 	-- alternative 1
+	-- 	-- https://github.com/jvgrootveld/telescope-zoxide/blob/main/lua/telescope/_extensions/zoxide/list.lua
+	--
+	-- 	lazy = true,
+	-- 	config = function()
+	-- 		require("telescope").load_extension("z")
+	-- 	end,
+	-- 	opts = {
+	-- 		cmd = { vim.o.shell, "-c", "zoxide query -l" },
+	-- 	},
+	-- },
 	{
 		"nvim-telescope/telescope.nvim",
 		-- import lazy: https://github.com/NvChad/NvChad/blob/2e54fce0281cee808c30ba309610abfcb69ee28a/lua/nvchad/plugins/init.lua#L147

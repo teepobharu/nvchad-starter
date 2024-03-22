@@ -30,6 +30,7 @@ for _, lsp in ipairs(servers) do
 end
 --
 -- specfic language setup
+-- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
 lspconfig.omnisharp.setup({
 	-- cmd = { "dotnet", "/path/to/omnisharp/OmniSharp.dll" },
 	on_attach = on_attach,
@@ -63,10 +64,12 @@ opts.desc = "Show LSP type definitions"
 keymap.set("n", "gt", "<cmd>Telescope lsp_type_definitions<CR>", opts) -- show lsp type definitions
 
 opts.desc = "Show buffer diagnostics"
-keymap.set("n", "<leader>D", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show  diagnostics for file
+keymap.set("n", "<leader>ld", "<cmd>Telescope diagnostics <CR>", opts) -- show  diagnostics for file
 
 opts.desc = "Show line diagnostics"
-keymap.set("n", "<leader>d", vim.diagnostic.open_float, opts) -- show diagnostics for line
+keymap.set("n", "<leader>lD", vim.diagnostic.open_float, opts) -- show diagnostics for line
+opts.desc = "Show file diagnostics"
+keymap.set("n", "<leader>lD", "<cmd>Telescope diagnostics bufnr=0<CR>", opts) -- show diagnostics for line
 
 opts.desc = "Go to previous diagnostic"
 keymap.set("n", "[d", vim.diagnostic.goto_prev, opts) -- jump to previous diagnostic in buffer
@@ -76,7 +79,6 @@ keymap.set("n", "]d", vim.diagnostic.goto_next, opts) -- jump to next diagnostic
 
 opts.desc = "See available code actions"
 keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see available code actions, in visual mode will apply to selection
-opts.desc = "LSP rename"
 
 -- vim.api.nvim_del_keymap('n', '<leader>rn')
 --  NVChad mappings: https://github.com/NvChad/NvChad/blob/v2.5/lua/nvchad/configs/lspconfig.lua#L11
@@ -84,6 +86,7 @@ opts.desc = "LSP rename"
 --  why NVCHAD keymaps not get overriden ??? 
 local map = keymap.set -- for nvchad mappings / reuse - override
 
+opts.desc = "LSP rename"
 map("n", "<leader>ra", vim.lsp.buf.rename, opts) -- rename symbol under cursor
 -- keymap.set("n", "<leader>ra")
 -- wl - worklist folder list

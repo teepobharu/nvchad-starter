@@ -74,12 +74,14 @@ Using formatters
 - enable on config
 - enable format from lazy  = <leader>fm 
 
-| Key            | Description          |
-| -------------- | -----------          |
-| K              | see documents params |
-| gd             | See references       |
-| gr             | Reference lsp        |
-| gR             | References telescope |
-| [d and ]d      | Diagnostics Jump     |
+| Key            | Description               |
+| -------------- | -----------               |
+| K              | see documents params      |
+| gd             | See references            |
+| gr             | Reference lsp             |
+| gR             | References telescope      |
+| [d and ]d      | Diagnostics Jump          |
+| <leader>ca     | Code action - to help fix |
+| <leader>ld     | Line diagnostics          |
 
 
