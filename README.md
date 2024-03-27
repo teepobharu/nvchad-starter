@@ -48,7 +48,6 @@ Tables plugin  (manual enabled)
 | _ff            | Find Files             |
 | _fh            | Help Pages             |
 | _fb            | Buffers                |
-| asdsa          | asdasd                 |
 
 
 ### LSP
@@ -83,5 +82,6 @@ Using formatters
 | [d and ]d      | Diagnostics Jump          |
 | <leader>ca     | Code action - to help fix |
 | <leader>ld     | Line diagnostics          |
+
 
 
