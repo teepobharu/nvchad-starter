@@ -31,14 +31,26 @@ end
 --
 -- specfic language setup
 -- https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-lspconfig.omnisharp.setup({
-	-- cmd = { "dotnet", "/path/to/omnisharp/OmniSharp.dll" },
-	on_attach = on_attach,
-	capabilities = capabilities,
-	cmd = { "/usr/bin/omnisharp", "--languageserver" },
-	filetypes = { "cs" },
-	root_dir = lspconfig.util.root_pattern("*.sln", "*.csproj", "Directory.Build.props"),
-})
+-- Get the output of the 'which omnisharp' command
+
+local omnisharp_path = vim.fn.system("which omnisharp")
+if vim.v.shell_error == 0 and omnisharp_path ~= "" then
+	-- Trim any newline characters from the output
+	omnisharp_path = omnisharp_path:gsub("[\n\r]+", "")
+	lspconfig.omnisharp.setup({
+		-- cmd = { "dotnet", "/path/to/omnisharp/OmniSharp.dll" },
+		on_attach = on_attach,
+		capabilities = capabilities,
+		-- cmd = { "/usr/bin/omnisharp", "--languageserver" },
+		-- set path to $HOME/.local/share/nvim/mason/bin/omnisharp
+		cmd = { omnisharp_path, "--languageserver" },
+		-- cmd = { vim.fn.expand("$HOME/.local/share/nvim/mason/bin/omnisharp"), "--languageserver" },
+		filetypes = { "cs" },
+		root_dir = lspconfig.util.root_pattern("*.sln", "*.csproj", "Directory.Build.props"),
+	})
+else
+	print("Omnisharp not found")
+end
 
 -- key map
 
@@ -83,7 +95,7 @@ keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts) -- see ava
 -- vim.api.nvim_del_keymap('n', '<leader>rn')
 --  NVChad mappings: https://github.com/NvChad/NvChad/blob/v2.5/lua/nvchad/configs/lspconfig.lua#L11
 --  attach mapping to each buffer separately in opts
---  why NVCHAD keymaps not get overriden ??? 
+--  why NVCHAD keymaps not get overriden ???
 local map = keymap.set -- for nvchad mappings / reuse - override
 
 opts.desc = "LSP rename"

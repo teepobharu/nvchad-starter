@@ -289,13 +289,32 @@ local plugins = {
 		},
 	},
 	{
+		"nvim-telescope/telescope-ui-select.nvim",
+		dependencies = {
+			"nvim-telescope/telescope.nvim",
+		},
+		config = function()
+			-- https://github.com/nvim-telescope/telescope-ui-select.nvim
+			local t = require("telescope")
+			t.setup({
+				extensions = {
+					["ui-select"] = {
+						require("telescope.themes").get_dropdown({}),
+					},
+				},
+			})
+
+			t.load_extension("ui-select")
+		end,
+	},
+	{
 		"jvgrootveld/telescope-zoxide",
 		dependencies = {
 			"nvim-telescope/telescope.nvim",
 		},
 		config = function()
+			local t = require("telescope")
 			local z_utils = require("telescope._extensions.zoxide.utils")
-      local t = require("telescope")
 			-- Configure telescope-zoxide
 			t.setup({
 				extensions = {
@@ -323,9 +342,8 @@ local plugins = {
 				},
 				-- https://github.com/jvgrootveld/telescope-zoxide?tab=readme-ov-file
 			})
-      t.load_extension("zoxide")
-      map("n", "<leader>cd", t.extensions.zoxide.list, { desc = "Telescope Zoxide" })
-
+			-- t.load_extension("zoxide") -- please add inside telescope instead
+			map("n", "<leader>cd", t.extensions.zoxide.list, { desc = "Telescope Zoxide" })
 		end,
 	},
 	-- {
@@ -350,6 +368,7 @@ local plugins = {
 		opts = function()
 			local opts = require("nvchad.configs.telescope")
 			local defaultOverride = overrides.telescope.getOptions()
+			opts.extensions_list = utils.combineUniqueLists(opts.extensions_list, { "zoxide", "ui-select" })
 
 			opts.defaults = vim.tbl_deep_extend("force", opts.defaults, defaultOverride)
 
@@ -357,8 +376,6 @@ local plugins = {
 
 			-- Extensions
 			-- extension nvchad example: https://github.com/NvChad/ui/blob/5a910659cffebf9671d0df1f98fb159c13ee9152/lua/telescope/_extensions/themes.lua
-
-			opts.extensions_list = utils.combineUniqueLists(opts.extensions_list, { "zoxide" })
 
 			-- print(vim.inspect(opts))
 
