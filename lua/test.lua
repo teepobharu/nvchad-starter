@@ -1,3 +1,4 @@
+local utils = require('utils')
 print("loading tests ...")
 print(("asdasd"):gsub("d", "X"))
 
@@ -15,3 +16,23 @@ print(("asdasd"):gsub("d", "X"))
 
 print(vim.inspect(sanitized_branch))
  
+
+print("" > "" or "asadasdassd")
+-- Vim options 
+print("============ VIM Functions ===============")
+
+-- nothing
+-- vim.fn.jobstart({'open', '.'}) -- not work in tmux
+-- vim.fn.jobstart({ "/bin/sh", "-c", "open https://google.com" }) -- nothing
+-- vim.fn.system('echo 123')
+
+
+-- run open command 
+-- run in silence 
+vim.cmd('!open https://google.com')
+
+print("============ UTILS Functions ===============")
+-- local test1 = utils.combine_dicts('force', {'s': 3}, {'s': 1})
+local test1 = utils.combine_dicts({behavior = 'force'} , {s= 3}, {s= 1})
+print(vim.inspect(test1))
+

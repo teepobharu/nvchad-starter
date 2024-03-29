@@ -40,6 +40,14 @@ M.nvimtree = {
 
 M.telescope = {
 	getOptions = function()
+    local function copy_displayed_file_path(prompt_bufnr)
+      local selection = require("telescope.actions.state").get_selected_entry()
+      local file_path = selection.value
+      -- print(vim.inspect(selection))
+      vim.fn.setreg("+", file_path)
+      print("Copied displayed file path: " .. file_path)
+    end
+
 		return {
 			pickers = {
 				find_files = {
@@ -98,6 +106,8 @@ M.telescope = {
 					-- ["<C-u>"] = require("telescope.actions").results_scrolling_up,
 					["<C-u>"] = false,
 					["<C-p>"] = require("telescope.actions.layout").toggle_preview,
+          -- alt + c : command not usable ? 
+          ["<M-c>"] = function(...) copy_displayed_file_path(...) ; end,
 					-- ['<c-d>'] = require('telescope.actions').delete_buffer,
 				},
 				-- When the search text is focused
@@ -321,14 +331,8 @@ M.telescope.getPickers = function(opts)
 
       -- vim.fn.jobstart({ "tmux", "run-shell", "-b", "-c", "open " .. url }, { detach = true })
       -- not work in tmux not sure why
-      local job = vim.fn.jobstart({ open_command, url }, {
-        on_exit = function() print('exit') end,
-      })
-
-
-			-- vim.fn.jobstart({ open_command, url }, { detach = true })
-      vim.fn.jobwait({job})
-			-- vim.cmd("silent !open " .. url)
+      vim.fn.jobstart({ open_command, url }, { detach = true }) -- not work in tmux
+      -- vim.cmd("silent !open " .. url)
 		end
 
     local function git_main_branch()

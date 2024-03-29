@@ -37,8 +37,8 @@ local plugins = {
 		lazy = false,
 		config = function()
 			require("configs.startify")
-			map("n", "<localleader>,", "<cmd>Startify<cr>", utils.combine_dicts(key_opts, { desc = "Startify" }))
-			map("n", "<leader>,", "<cmd>Startify<cr>", utils.combine_dicts(key_opts, { desc = "Startify" }))
+			map("n", "<localleader>,", "<cmd>Startify<cr>", utils.combine_dicts({}, key_opts, { desc = "Startify" }))
+			map("n", "<leader>,", "<cmd>Startify<cr>", utils.combine_dicts({}, key_opts, { desc = "Startify" }))
 		end,
 	},
 	{
@@ -236,6 +236,7 @@ local plugins = {
 		-- }
 		-- end,
 		-- broked the c-space
+		-- sample config : https://github.com/hrsh7th/nvim-cmp/issues/1142#issuecomment-1355279953
 		opts = function()
 			local cmp = require("cmp")
 			local cmp_conf = require("nvchad.configs.cmp")
@@ -246,11 +247,46 @@ local plugins = {
 			--         ["<Esc>"] = cmp.mapping.abort(),
 			-- })
 			-- merge mapping deep by copiolt
-			cmp_conf.mapping = utils.combine_dicts(cmp_conf.mapping, {
+			cmp_conf.mapping = utils.combine_dicts({ behavior = "force" }, cmp_conf.mapping, {
 				["<C-j>"] = cmp.mapping.select_next_item(),
 				["<C-k>"] = cmp.mapping.select_prev_item(),
+				["<C-n>"] = cmp.mapping.scroll_docs(4),
+				["<C-p>"] = cmp.mapping.scroll_docs(-4),
 				["<Esc>"] = cmp.mapping.abort(),
-				["<C-Space>"] = cmp.mapping.abort(), -- does not replace the original mapping
+				["<C-Space>"] = (function()
+					if cmp.visible() then
+						cmp.abort()
+					else
+						cmp.complete({ reason = cmp.ContextReason.Auto })
+					end
+				end),
+				["<Tab>"] = cmp.mapping(function(fallback)
+					if cmp.visible() then
+						cmp.select_next_item()
+					elseif require("luasnip").expand_or_jumpable() then
+						vim.fn.feedkeys(
+							vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true),
+							""
+						)
+					else
+						fallback()
+					end
+				end, {
+					"i",
+					"s",
+				}),
+				["<S-Tab>"] = cmp.mapping(function(fallback)
+					if cmp.visible() then
+						cmp.select_prev_item()
+					elseif require("luasnip").jumpable(-1) then
+						vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
+					else
+						fallback()
+					end
+				end, {
+					"i",
+					"s",
+				}),
 			})
 			return cmp_conf
 		end,

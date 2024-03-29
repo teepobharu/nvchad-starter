@@ -347,7 +347,10 @@ end
 
 map("n", "gx", function()
 	-- fallback to send gx if not a link or file
-	vim.fn.jobstart({ open_command, url_repo() }, { detach = true })
+	vim.fn.jobstart({ open_command, url_repo() }, { detach = true }) -- not work in tmux
+  -- print("!" .. open_command .. " " .. url_repo())
+	-- vim.cmd("!" .. open_command .. " " .. url_repo())
+
 end, { silent = true, desc = "Open url" })
 
 map("n", "<Leader>nx", function()
