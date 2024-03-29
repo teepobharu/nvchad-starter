@@ -118,8 +118,9 @@ M.telescope = {
 					["X"] = require("telescope.actions").delete_buffer,
 					["J"] = require("telescope.actions").results_scrolling_down,
 					["K"] = require("telescope.actions").results_scrolling_up,
-					["<C-d>"] = require("telescope.actions").results_scrolling_down,
-					["<C-u>"] = require("telescope.actions").results_scrolling_up,
+
+					-- ["<C-d>"] = require("telescope.actions").results_scrolling_down,
+					-- ["<C-u>"] = require("telescope.actions").results_scrolling_up,
 
 					-- See default mappings / fn name here: https://github.com/nvim-telescope/telescope.nvim/blob/master/lua/telescope/mappings.lua#L154
 					["<C-k>"] = function(...)

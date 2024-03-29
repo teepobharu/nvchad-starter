@@ -1,12 +1,23 @@
 local M = {}
 
 -- first key duplicate = take the first arg priority "keep"
-M.combine_dicts = function(...)
+
+---@class Opts
+---@field behavior string The behavior to use when combining dictionaries. Must be "force" or "keep".
+
+---@param opts Opts|any
+M.combine_dicts = function(opts, ...)
     local combined_dict = {}
     local dicts = {...}
+    -- if behavior is not set or emptry default = force
+    local behavior = opts.behavior
+
+   if not behavior or behavior == "" then
+     behavior = "force"
+   end
 
     for _, dict in ipairs(dicts) do
-        combined_dict = vim.tbl_extend("keep", combined_dict, dict)
+        combined_dict = vim.tbl_extend(behavior, combined_dict, dict)
     end
 
     return combined_dict

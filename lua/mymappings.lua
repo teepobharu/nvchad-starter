@@ -10,16 +10,13 @@ local overrides = require("configs.overrides")
 -- check using :letmapleader or :let maplocalleader
 -- -> need to put inside plugins mapping also to make it work on those mapping
 -- vim.g.maplocalleader = ","
--- HANDLE tab cmp completion in lua : https://github.com/nanotee/nvim-lua-guide#tips-4
 -- Debug
 map("n", "<leader>h", ":sp<CR>", { desc = "HSplit", silent = true })
 map("n", "<leader>v", ":vs<CR>", { desc = "VSplit", silent = true })
 map("n", "<M-Tab>", ":tabnext<CR>", { noremap = true, silent = true })
--- command completion
--- map('c', "<C-P>", function() wildmenumode() ? "<C-P>" : "<Up>" end, { noremap = true, silent = true })
--- map('c', "<C-N>", function() wildmenumode() ? "<C-N>" : "<Down>" end , { noremap = true, silent = true })
---
 
+-- HANDLE tab cmp completion in lua : https://github.com/nanotee/nvim-lua-guide#tips-4
+-- command completion
 vim.cmd([[
   cnoremap <expr> <C-j> wildmenumode() ? "\<C-N>" : "\<C-j>"
   cnoremap <expr> <C-k> wildmenumode() ? "\<C-P>" : "\<C-k>"
@@ -259,7 +256,8 @@ map("n", "<leader>gd.", ":Gitsigns preview_hunk_inline<cr>", { desc = "Preview H
 map("n", "<leader>gdv", ":Gvdiffsplit<CR>", { desc = "V Diff" })
 map("n", "<leader>gds", ":Gdiffsplit<CR>", { desc = "S Diff" })
 map("n", "<leader>gdm", ':Gitsigns diffthis "~"<CR>', { desc = "Diff master" })
-map("n", "<leader>gf", ":Telescope git_commits<cr>", { silent = true, desc = "Git Commits" })
+map("n", "<leader>gbc", ":Telescope git_bcommits<cr>", { silent = true, desc = "Git BCommits" })
+map("n", "<leader>gbr", ":Telescope git_branches<cr>", { silent = true, desc = "Git Branches" })
 map("n", "<leader>gl", ":Git log<cr>", { silent = true, desc = "Git Log" })
 map("n", "<leader>gp", ":Git push<cr>", { silent = true, desc = "Git Push" })
 map("n", "<leader>gr", ":Gitsigns reset_hunk<cr>", { silent = true, desc = "Git Reset Hunk" })
