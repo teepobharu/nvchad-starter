@@ -59,6 +59,16 @@ local opts = { noremap = true, silent = true }
 opts.desc = "Telescope References"
 keymap.set("n", "gR", "<cmd>Telescope lsp_references<CR>", opts)
 
+opts.desc = "Toggle Diagnostic inline"
+local isLspDiagnosticsVisible = true
+
+vim.keymap.set("n", "<leader>lx", function()
+    isLspDiagnosticsVisible = not isLspDiagnosticsVisible
+    vim.diagnostic.config({
+        virtual_text = isLspDiagnosticsVisible,
+        underline = isLspDiagnosticsVisible
+    }) end, opts)
+
 -- set keybinds
 opts.desc = "LSP References"
 keymap.set("n", "gr", "vim.lsp.buf.references", opts) -- show definition, references

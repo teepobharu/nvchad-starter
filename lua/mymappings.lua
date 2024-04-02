@@ -1,4 +1,6 @@
 -- " Mapping guide
+-- " Mapping References"
+-- : nvchad: https://github.com/NvChad/NvChad/blob/2e54fce0281cee808c30ba309610abfcb69ee28a/lua/nvchad/mappings.lua
 -- ====================================
 
 local opts = { noremap = true, silent = true }
@@ -34,6 +36,47 @@ map("n", "<Down>", ":resize +2<CR>", opts)
 map("n", "<Left>", "<cmd>vertical resize -2<CR>", opts)
 map("n", "<Right>", "<cmd>vertical resize +2<CR>", opts)
 
+local function toggle_fold_or_clear_highlight()
+    if vim.fn.foldlevel('.') > 0 then
+        vim.api.nvim_input('za')
+    else
+        vim.cmd('nohlsearch')
+    end
+end
+map('n', '<Esc>', toggle_fold_or_clear_highlight, { expr = true, silent = true, noremap = true })
+
+-- Duplicate line and preserve previous yank register
+map('n', '<A-d>', function()
+    local saved_unnamed = vim.fn.getreg('"')
+    local saved_unnamedplus = vim.fn.getreg('+')
+    local current_line = vim.fn.getline('.')
+    -- Save previous yank registers in a safe place
+    -- propmt inform to choose reg to save 
+    -- print("Choose register to save")
+    -- local temp_register = vim.fn.nr2char(vim.fn.getchar()) -- choose char 
+    local temp_register = 'm'
+    vim.fn.setreg(temp_register, saved_unnamed, 'a')
+    vim.fn.setreg('"', current_line, 'a')
+    vim.fn.setreg('+', current_line, 'a')
+    -- Duplicate the current line
+    -- vim.cmd('normal! yyp')
+    vim.api.nvim_input('yyp')
+    -- Restore previous yank registers
+    vim.fn.setreg('"', saved_unnamed, 'a')
+    vim.fn.setreg('+', saved_unnamedplus, 'a')
+    vim.fn.setreg(temp_register, '', 'a')
+end, { desc = 'Duplicate line and preserve yank register' })
+
+-- " Copy to system clipboard
+-- vnoremap <leader>y "+y
+-- nnoremap <leader>Y "+yg_
+-- nnoremap <leader>y "+y
+-- nnoremap <leader>yy "+yy
+map("n", "Y", '"+y', { desc = "Copy to system clipboard" })
+map("n", "YY", '"+yy', { desc = "Copy to system clipboard" })
+map("v", "Y", '"+y', { desc = "Copy to system clipboard" })
+
+--
 -- Tmux navigation - move to plugins config
 --
 map("n", "<C-k>", "<cmd>NvimTmuxNavigateUp<cr>", opts)
@@ -110,6 +153,7 @@ map("v", "//", "y/\\V<C-R>=escape(@\",'/\\')<CR><CR>", { desc = "Search selected
 -- TELESCOPE ---
 --==========================
 map("n", "<leader>ft", "<cmd>Telescope<CR>", { desc = "Telescope" })
+map("n", "<leader>e", "<cmd>Telescope buffers<CR>", { desc = "Telescope Buffers" })
 map("n", "<leader>fr", function()
 	require("telescope.builtin").lsp_references()
 end, { desc = "LSP Find References" })
@@ -140,6 +184,24 @@ local setCustomPickersAndRunPickers = function(cb)
 	end
 	custom_pickers[cb]()
 end
+--  =======================================
+-- Other mappings for telescopes
+-- =======================================
+-- Telescope helper functions
+vim.api.nvim_create_user_command(
+    'FindConfig',
+    function ()
+    -- https://github.com/nvim-telescope/telescope.nvim/wiki/Configuration-Recipes#having-a-factory-like-function-based-on-a-dict - configure factory like dict differenet find cmds
+    -- if current path is ~ only limit to depth = 1  with prompt = find HOME files include hidden files and folders 
+        if vim.fn.getcwd() == vim.fn.expand("~") then
+            require('telescope.builtin').find_files({prompt_title = "Find $HOME files", cwd="~", find_command = {'fd', '--type', 'f', '--hidden', '--max-depth', '1'}})
+            return
+        end
+        require('telescope.builtin').find_files({prompt_title = "Find .Config files", cwd="~/.config"})
+    end,
+{})
+
+
 -- Telescope custom pickers
 map("n", "<leader>fs", function()
 	setCustomPickersAndRunPickers("session_pickers")
@@ -150,7 +212,7 @@ end, { desc = "Telescope Test Picker" })
 map("n", "<leader>go", function()
 	setCustomPickersAndRunPickers("open_git_pickers")
 end, { desc = "Git Open remote" })
-
+map("n", "<leader>fZ", "<cmd>FindConfig<CR>", { desc = "Find Config files" })
 -- =============  GIT =============================
 -- ===============================================
 --

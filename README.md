@@ -4,9 +4,11 @@
 - [ ] zoxide setup 
 - [ ] Override lsp config mapping preoprly
 - [ ] cmp mapping C-space and more mapping config behavior <TAB> in comment check nvchad
+- Telescopes 
+- [ ] Improve telescope git files an grep
 - [ ] Lazygit and dotfiles 
     - https://github.com/jesseduffield/lazygit/discussions/1201#discussioncomment-2546527 
-- [ ] LSP
+-  LSP
     - jsx comment not correct 
 - [x] Omnisharp dotnet setup 
 
@@ -34,6 +36,12 @@ Help Pages
 
 | Key         | Description                          |
 | ----------  | ----------                           |
+| C-s         | Save                                 |
+| <ll> w      | Save                                 |
+| Y, YY       | copy to system clipboard             |
+| <ll> q      | Quit                                 |
+| za/A        | fold toggle cursor / All             |
+| zd          | fold delete                          |
 | <leader> fm | Format whole file                    |
 | <leader> fF | Toggle Format on Save Buff(!)/Global |
 
