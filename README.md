@@ -1,20 +1,33 @@
 # Quickstart guidelines
 
 ## TODOs
-- [ ] zoxide setup 
-- [ ] Override lsp config mapping preoprly
-- [ ] cmp mapping C-space and more mapping config behavior <TAB> in comment check nvchad
+- General
+    - [x] zoxide setup 
+    - [ ] Override lsp config mapping preoprly
+    - [x] cmp mapping C-space and more mapping config behavior <TAB> in comment check nvchad
+- Git 
+    - [ ] Diff view : https://github.com/sindrets/diffview.nvim?tab=readme-ov-file
 - Telescopes 
-- [ ] Improve telescope git files an grep
-- [ ] Lazygit and dotfiles 
-    - https://github.com/jesseduffield/lazygit/discussions/1201#discussioncomment-2546527 
+    - [ ] Improve telescope git files an grep
+    - [ ] Lazygit and dotfiles 
+        - https://github.com/jesseduffield/lazygit/discussions/1201#discussioncomment-2546527 
 -  LSP
     - jsx comment not correct 
-- [x] Omnisharp dotnet setup 
+    - [x] Omnisharp dotnet setup 
+
+
 
 
 ## Keyboards
 
+### Views
+
+| Key          | Description                             |
+| ----------   | ----------                              |
+| <esc>        | toggle fold if exists else no highlight |
+| VIM DEFAULTS | ----------                              |
+| <C-g>        | Show current file path                  |
+ 
 ### Navigations
 
 gx - custom function to go to links or directly to github page plugin link

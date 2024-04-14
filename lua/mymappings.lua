@@ -67,6 +67,14 @@ map('n', '<A-d>', function()
     vim.fn.setreg(temp_register, '', 'a')
 end, { desc = 'Duplicate line and preserve yank register' })
 
+vim.api.nvim_create_user_command("OpenTerminalInSplitWithCwd", function()
+  local cwd = vim.fn.expand('%:p:h')
+
+  vim.api.nvim_command('split | lcd ' .. cwd .. ' | terminal')
+end, {})
+map("n", "<Leader>t.", ":OpenTerminalInSplitWithCwd<CR>", { noremap = true, silent = true })
+
+
 -- " Copy to system clipboard
 -- vnoremap <leader>y "+y
 -- nnoremap <leader>Y "+yg_

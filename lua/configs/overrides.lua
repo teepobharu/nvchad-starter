@@ -91,10 +91,12 @@ M.telescope = {
 				-- to get desc (extract from object ?): https://github.com/nvim-telescope/telescope.nvim/blob/dc192faceb2db64231ead71539761e055df66d73/lua/telescope/mappings.lua#L208
 				i = {
 					["<C-k>"] = function(...)
-						require("telescope.actions").move_selection_previous(...)
+                        require("telescope.actions").results_scrolling_down(...)
+                        -- require("telescope.actions").move_selection_previous(...)
 					end,
 					["<C-j>"] = function(...)
-						require("telescope.actions").move_selection_next(...)
+                        require("telescope.actions").results_scrolling_up(...)
+						-- require("telescope.actions").move_selection_next(...)
 					end,
 					["<C-h>"] = function(...)
 						require("telescope.actions").results_scrolling_left(...)
@@ -102,7 +104,7 @@ M.telescope = {
 					["<C-l>"] = function(...)
 						require("telescope.actions").results_scrolling_right(...)
 					end,
-					["<C-d>"] = require("telescope.actions").results_scrolling_down,
+					-- ["<C-d>"] = require("telescope.actions").results_scrolling_down,
 					-- ["<C-u>"] = require("telescope.actions").results_scrolling_up,
 					["<C-u>"] = false,
 					["<C-p>"] = require("telescope.actions.layout").toggle_preview,
