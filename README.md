@@ -35,13 +35,25 @@ gx - custom function to go to links or directly to github page plugin link
 - for LSP navigations see below LSP map
 
 
-Help Pages
+#### Help Pages
 - C-] go to tags - section (highlighted in red) 
 - C-t to go back to previous location tag
 
 | Key        | Description                           |
 | ---------- | ----------                            |
 | zj / k     | Navigate fold (useful in diff split ) |
+
+
+
+#### Files 
+
+Nvim Tree 
+| Key   | Description               |
+| ---   | -----------               |
+| <C-n> | Toggle NvimTree           |
+| y     | Copy file name (with ext) | 
+| ge    | copy base name (no ext)   |
+
 
 
 ### Editing 

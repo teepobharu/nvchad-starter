@@ -83,6 +83,7 @@ map("n", "<Leader>t.", ":OpenTerminalInSplitWithCwd<CR>", { noremap = true, sile
 map("n", "Y", '"+y', { desc = "Copy to system clipboard" })
 map("n", "YY", '"+yy', { desc = "Copy to system clipboard" })
 map("v", "Y", '"+y', { desc = "Copy to system clipboard" })
+map("v", "<C-c>", '"+y', { desc = "Copy to system clipboard" })
 
 --
 -- Tmux navigation - move to plugins config
