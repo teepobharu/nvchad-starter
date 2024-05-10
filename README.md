@@ -17,6 +17,23 @@
 
 
 
+## Configurations
+
+
+
+### AI 
+
+#### ChatGPT 
+
+plugin: https://www.youtube.com/watch?v=jrFjtwm-R94&ab_channel=NerdSignals 
+- Act as (persona)
+- Docs 
+- Chat Grammar correct Bug fixes, Explain
+
+
+#### Copilot 
+
+https://github.com/CopilotC-Nvim/CopilotChat.nvim
 
 ## Keyboards
 
@@ -55,6 +72,11 @@ Nvim Tree
 | ge    | copy base name (no ext)   |
 
 
+Config file settings / debug
+
+| Key             | Description                  |
+| ---             | -----------                  |
+| <local>rl | include lua (check test.lua) |
 
 ### Editing 
 
@@ -91,6 +113,17 @@ Tables plugin  (manual enabled)
 | _ff            | Find Files             |
 | _fh            | Help Pages             |
 | _fb            | Buffers                |
+
+
+### Git
+
+| Key            | Description            |
+| -------------- | -----------            |
+| C-A-j/k        | Next Hunk              |
+| ]c, [c         | Next Hunk              |
+| <leader> gb    | Git Blame              |
+| - l            | Blame Line             |
+| - c            | Blame commit Telescope |
 
 
 ### LSP

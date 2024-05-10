@@ -1,3 +1,21 @@
+local function rename_buffer()
+    local old_name = vim.fn.expand("%")
+    local new_name = vim.fn.input("Enter new buffer name: ", old_name)
+
+    -- If user provided a new name and it's different from the old name
+    if new_name ~= '' and new_name ~= old_name then
+        -- Rename the buffer
+        vim.api.nvim_buf_set_name(0, new_name)
+        print("Buffer renamed to " .. new_name)
+    else
+        print("Buffer not renamed.")
+    end
+end
+
+local map = vim.keymap.set
+-- Bind a key to invoke the renaming function
+map('n', '<localleader>rr', rename_buffer, { noremap = true, silent = true })
+
 local utils = require('utils')
 print("loading tests ...")
 print(("asdasd"):gsub("d", "X"))

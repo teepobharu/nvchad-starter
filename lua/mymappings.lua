@@ -380,6 +380,20 @@ map("n", "<leader>gbb", ":Git blame<cr>", { silent = true, desc = "Git Blame" })
 -- Custom commands
 -- ====================
 
+local function rename_buffer()
+    local old_name = vim.fn.expand("%")
+    local new_name = vim.fn.input("Enter new buffer name: ", old_name)
+
+    -- If user provided a new name and it's different from the old name
+    if new_name ~= '' and new_name ~= old_name then
+        -- Rename the buffer
+        vim.api.nvim_buf_set_name(0, new_name)
+        print("Buffer renamed to " .. new_name)
+    else
+        print("Buffer not renamed.")
+    end
+end
+
 map("n", "<leader>n", "", { desc = "+CustomCommands" })
 map("n", "<leader>nn", "<cmd>so $MYVIMRC<CR>", { desc = "Source Config" })
 map("n", "<leader>S", "<cmd>SSave<CR>", { desc = "Save Session" })
@@ -387,9 +401,10 @@ map("n", "<leader>S", "<cmd>SSave<CR>", { desc = "Save Session" })
 -- map('n', '<Leader>nM', [[:redir @a<CR>:messages<CR>:redir END<CR>:put! a<CR>]], { noremap = true, silent = true, desc = 'Print messages' })
 -- copy relative filepath name
 map("n", "<leader>nf", ":let @+=@%<CR>", { desc = "Copy relative filepath name" })
+-- Bind a key to invoke the renaming function
+map('n', '<leader>nr', rename_buffer, { desc = "Rename Buffer", noremap = true, silent = true })
 -- copy absolute filepath
 map("n", "<leader>nF", ':let @+=expand("%:p")<CR>', { desc = "Copy absolute filepath" })
-
 local function show_messages_window()
 	-- Create a new buffer
 	local buf = vim.api.nvim_create_buf(false, true)
