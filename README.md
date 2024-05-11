@@ -19,32 +19,59 @@
 
 ## Configurations
 
+### Examples
 
 
-### AI 
-
-#### ChatGPT 
-
-plugin: https://www.youtube.com/watch?v=jrFjtwm-R94&ab_channel=NerdSignals 
-- Act as (persona)
-- Docs 
-- Chat Grammar correct Bug fixes, Explain
+#### JellyDN: 
+- References: https://github.com/jellydn/lazy-nvim-ide?tab=readme-ov-file#try-with-docker
 
 
-#### Copilot 
+```sh 
+VOLUME=$(pwd)
 
-https://github.com/CopilotC-Nvim/CopilotChat.nvim
+docker run -w /root -it --rm -v $VOLUME:/root/mount alpine:latest sh -uelic '
+  apk add git nodejs npm neovim ripgrep build-base make musl-dev go --update
+  go install github.com/jesseduffield/lazygit@latest
+  git clone https://github.com/jellydn/lazy-nvim-ide ~/.config/nvim
+  nvim
+'
 
-## Keyboards
+```
 
-### Views
+Features
+- CMD LINE 
+- nice interface and terminal 
+- Native lazy leveration with extras folder to toggle by user 
+- Folding pairs guideline
+- Cleaner settings on telescope help see
+- Find with Telescope f cleaner
+- Testing (l-t) ??  - how it works ?
+- Notificaiton
 
-| Key          | Description                             |
-| ----------   | ----------                              |
-| <esc>        | toggle fold if exists else no highlight |
-| VIM DEFAULTS | ----------                              |
-| <C-g>        | Show current file path                  |
- 
+Not have
+- gx open link 
+
+
+Packages use
+- mason-lsp 
+- toggleterm
+- neo-tree 
+= mini{pairs,comment}
+
+
+Some keys 
+- C+/ toggle terminal 
+
+
+### Windows 
+
+| Key            | Description          |
+| -------------- | -----------          |
+| Esc-hl         | Resize screen        |
+| <leader>h/v    | Split                |
+| C-\ + C-n      | Terminal Normal Mode | 
+
+
 ### Navigations
 
 gx - custom function to go to links or directly to github page plugin link
@@ -68,14 +95,14 @@ Nvim Tree
 | Key   | Description               |
 | ---   | -----------               |
 | <C-n> | Toggle NvimTree           |
-| y     | Copy file name (with ext) | 
+| y     | Copy file name (with ext) |
 | ge    | copy base name (no ext)   |
 
 
 Config file settings / debug
 
-| Key             | Description                  |
-| ---             | -----------                  |
+| Key       | Description                  |
+| ---       | -----------                  |
 | <local>rl | include lua (check test.lua) |
 
 ### Editing 
@@ -126,6 +153,34 @@ Tables plugin  (manual enabled)
 | - c            | Blame commit Telescope |
 
 
+Fugitive 
+
+
+Status View
+
+| Key        | Description    |
+| ---        | -----------    |
+| <leader>gz | see git status |
+| = / >      | see diff       |
+| J/K        | next hunk      |
+| ( ) \ i    | next file      |
+| ]m         | collapse ]
+| I          | patch mode     |
+
+| X            | discard under cursor  |
+| G            | Git Status            |
+
+Commit / Files View
+
+| Key                  | Description              |
+| ---                  | -----------              |
+| :Gclog               | See clean commit message |
+| <enter> / o / go / O | open file / split        |
+| C                    | go to commit of the file |
+
+
+
+
 ### LSP
 
 Setup 
@@ -160,4 +215,27 @@ Using formatters
 | <leader>ld     | Line diagnostics          |
 
 
+### AI 
 
+#### ChatGPT 
+
+plugin: https://www.youtube.com/watch?v=jrFjtwm-R94&ab_channel=NerdSignals 
+- Act as (persona)
+- Docs 
+- Chat Grammar correct Bug fixes, Explain
+
+
+#### Copilot 
+
+https://github.com/CopilotC-Nvim/CopilotChat.nvim
+
+## Keyboards
+
+### Views
+
+| Key          | Description                             |
+| ----------   | ----------                              |
+| <esc>        | toggle fold if exists else no highlight |
+| VIM DEFAULTS | ----------                              |
+| <C-g>        | Show current file path                  |
+ 

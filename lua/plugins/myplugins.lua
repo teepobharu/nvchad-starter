@@ -222,20 +222,6 @@ local plugins = {
 	{
 		"hrsh7th/nvim-cmp",
 		-- https://github.com/NvChad/NvChad/issues/2332
-		-- config = function()
-		--   local cmp = require("cmp")
-		--   mapping = {
-		--
-		--     ["<C-p>"] = cmp.mapping.select_prev_item(),
-		--     ["<C-n>"] = cmp.mapping.select_next_item(),
-		--     ["<C-e>"] = cmp.mapping.close(),
-		--     ["<CR>"] = cmp.mapping.confirm({
-		--       behavior = cmp.ConfirmBehavior.Replace,
-		--       select = true,
-		--     }),
-		-- }
-		-- end,
-		-- broked the c-space
 		-- sample config : https://github.com/hrsh7th/nvim-cmp/issues/1142#issuecomment-1355279953
 		opts = function()
 			local cmp = require("cmp")
@@ -246,7 +232,7 @@ local plugins = {
 			--         ["<C-k>"] = cmp.mapping.select_prev_item(),
 			--         ["<Esc>"] = cmp.mapping.abort(),
 			-- })
-			-- merge mapping deep by copiolt
+			-- merge mapping deep by copilot
 			cmp_conf.mapping = utils.combine_dicts({ behavior = "force" }, cmp_conf.mapping, {
 				["<C-j>"] = cmp.mapping.select_next_item(),
 				["<C-k>"] = cmp.mapping.select_prev_item(),
@@ -293,48 +279,37 @@ local plugins = {
 		--
 	},
     {
-        "CopilotC-Nvim/CopilotChat.nvim",
-        branch = "canary",
-        dependencies = {
-          { "github/copilot.vim" }, -- or github/copilot.vim
-          { "nvim-lua/plenary.nvim" }, -- for curl, log wrapper
-        },
-        opts = {
-          debug = true, -- Enable debugging
-          -- See Configuration section for rest
-            -- prompts
-            -- config options: https://github.com/jellydn/lazy-nvim-ide/blob/main/lua/plugins/extras/copilot-chat-v2.lua 
-        },
-    },
-    {
 		"github/copilot.vim",
-		lazy = false,
+        event = "VeryLazy",
 		config = function()
-			vim.g.copilot_no_tab_map = true
-			vim.g["copilot_no_tab_map"] = true
-			vim.api.nvim_set_keymap("i", "<C-/>", 'copilot#Acceptt("\\<CR>")', { expr = true, silent = true })
+            vim.g["copilot_no_tab_map"] = true
+            -- enable copilot for specific filetypes
+            vim.g.copilot_filetypes = {
+                ["TelescopePrompt"] = false,
+            }
+            -- sample config: https://github.com/jellydn/lazy-nvim-ide/blob/main/lua/plugins/extras/copilot-vim.lua
+            -- Setup keymaps
+            local keymap = vim.keymap.set
+            local opts = { silent = true }
+
+            keymap("i", "<C-o>", 'copilot#Accept("\\<CR>")', { expr = true, replace_keycodes = false })
+            -- Set <C-y> to accept copilot suggestion
+            keymap("i", "<C-y>", 'copilot#Accept("\\<CR>")', { expr = true, replace_keycodes = false })
+
+            -- Set <C-i> to accept line
+            keymap("i", "<C-i>", "<Plug>(copilot-accept-line)", opts)
+
+            -- Set <C-j> to next suggestion, <C-k> to previous suggestion, <C-l> to suggest
+            keymap("i", "<C-j>", "<Plug>(copilot-next)", opts)
+            keymap("i", "<C-k>", "<Plug>(copilot-previous)", opts)
+            keymap("i", "<C-l>", "<Plug>(copilot-suggest)", opts)
+
+            -- Set <C-d> to dismiss suggestion
+            keymap("i", "<C-d>", "<Plug>(copilot-dismiss)", opts)
 		end,
+
 		keys = {
 			-- mapping source : https://www.reddit.com/r/neovim/comments/qsfvki/how_to_remap_copilotvim_accept_method_in_lua/
-			--
-			-- { "<leader>c.", { "", mode = "i"}, desc = "Copilot next" },
-			-- { "<leader>c,", { "", mode = "i"}, desc = "Copilot prev" },
-			-- { "<leader>c,", { 'copilot#Accept(“<CR>”)', mode = "i" } },
-			-- { "<C-e>", { 'copilot#Accept(“<CR>”)', mode = "i" }, desc = "Copilot accept" },
-			-- sample with mode settings => https://github.com/LazyVim/LazyVim/blob/566049aa4a26a86219dd1ad1624f9a1bf18831b6/lua/lazyvim/plugins/coding.lua#L28C44-L28C44
-			-- { "<C-/>", 'copilot#Accept("<CR>")', { mode = "i",  desc = "Copilot accept", silent = true, expr = true }},
-			{
-				"<C-E>",
-				function()
-					-- vim.fn("copilot#Accept(“<CR>”)")
-					vim.fn["copilot#Accept"]("<CR>")
-				end,
-				mode = "i",
-				desc = "Copilot accept",
-				expr = true,
-				silent = true,
-			},
-			-- { "<C-a>", { "<C-x>", mode = "n" } },
 			{ "<leader>ce", "<cmd>Copilot panel<cr>”)", desc = "Copilot suggest" },
 		},
 	},

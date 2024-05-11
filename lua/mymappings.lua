@@ -16,13 +16,21 @@ local overrides = require("configs.overrides")
 map("n", "<leader>h", ":sp<CR>", { desc = "HSplit", silent = true })
 map("n", "<leader>v", ":vs<CR>", { desc = "VSplit", silent = true })
 map("n", "<M-Tab>", ":tabnext<CR>", { noremap = true, silent = true })
+-- H and L to change buffer 
+map("n", "H", ":bp<CR>", { desc = "Previous Buffer", silent = true })
+map("n", "L", ":bn<CR>", { desc = "Next Buffer", silent = true })
 
--- HANDLE tab cmp completion in lua : https://github.com/nanotee/nvim-lua-guide#tips-4
--- command completion
+--
+-- -- HANDLE tab cmp completion in lua : https://github.com/nanotee/nvim-lua-guide#tips-4
+-- command completion in command line mode
 vim.cmd([[
   cnoremap <expr> <C-j> wildmenumode() ? "\<C-N>" : "\<C-j>"
   cnoremap <expr> <C-k> wildmenumode() ? "\<C-P>" : "\<C-k>"
 ]])
+
+-- ==============================
+-- Windows ======================
+-- ==============================
 
 -- Resize with arrows
 map("n", "<C-Up>", ":resize -2<CR>", opts)
@@ -45,6 +53,19 @@ local function toggle_fold_or_clear_highlight()
 end
 map('n', '<Esc>', toggle_fold_or_clear_highlight, { expr = true, silent = true, noremap = true })
 
+-- Terminal ==================
+vim.api.nvim_create_user_command("OpenTerminalInSplitWithCwd", function()
+  local cwd = vim.fn.expand('%:p:h')
+
+  vim.api.nvim_command('split | lcd ' .. cwd .. ' | terminal')
+end, {})
+map("n", "<Leader>t.", ":OpenTerminalInSplitWithCwd<CR>", { noremap = true, silent = true })
+
+
+-- =========================
+-- Editing =====================
+-- =========================
+
 -- Duplicate line and preserve previous yank register
 map('n', '<A-d>', function()
     local saved_unnamed = vim.fn.getreg('"')
@@ -66,14 +87,6 @@ map('n', '<A-d>', function()
     vim.fn.setreg('+', saved_unnamedplus, 'a')
     vim.fn.setreg(temp_register, '', 'a')
 end, { desc = 'Duplicate line and preserve yank register' })
-
-vim.api.nvim_create_user_command("OpenTerminalInSplitWithCwd", function()
-  local cwd = vim.fn.expand('%:p:h')
-
-  vim.api.nvim_command('split | lcd ' .. cwd .. ' | terminal')
-end, {})
-map("n", "<Leader>t.", ":OpenTerminalInSplitWithCwd<CR>", { noremap = true, silent = true })
-
 
 -- " Copy to system clipboard
 -- vnoremap <leader>y "+y
@@ -116,32 +129,9 @@ map("t", "<C-l>", "<cmd>NvimTmuxNavigateRight<cr>", opts)
 -- =====================
 --
 -- Menu navigation
--- Set the variable g:copilot_no_tab_map to true.
-vim.g.copilot_no_tab_map = true
--- imap <silent><script><expr> <C-J> copilot#Accept("\<CR>")
--- let g:copilot_no_tab_map = v:true
--- same output as using vim but not able to complete ?
--- keymap('i', '<C-/>', 'copilot#Accept("\\<CR>")', {expr=true, silent=true, script=true, desc="copilot Accept" })
--- keymap('i', '<C-J>', 'copilot#Accept("\\<CR>")', {expr=true, silent=true, script=true, desc="Copilot Accept"})
 
 -- " THE EXISTING Key bindings cannot be remap again"
 -- C-J, C-E cannot be used to map again
--- vim cmd works but map will have some weird char after hit enter / accept
-
-vim.cmd([[
-  " imap <silent><expr> <C-J> copilot#Accept("\<CR>")
-  " imap <silent><expr> <C-e> copilot#Accept("\<CR>")
-  " imap <silent><expr> <C-E> copilot#Accept("\<CR>")
-  imap <silent><expr> <C-o> copilot#Accept("\<CR>")  " working
-  " imap <silent><expr> <C-/> copilot#Accept("\<CR>")
-  let g:copilot_no_tab_map = v:true
-]])
-
--- map("i", "<C-j>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
-
--- map("i", "<C-o>", 'copilot#Accept()', { noremap = true, silent = true, expr = true })
--- keymap("c", "<C-j>",  'pumvisible() ? "\\<C-n>" : "\\<C-j>"', { expr = true, noremap = true } )
--- keymap("c", "<C-k>",  'pumvisible() ? "\\<C-p>" : "\\<C-k>"', { expr = true, noremap = true } )
 
 -- My mappings from Chadv2
 
@@ -244,6 +234,8 @@ map("n", "<leader>go", function()
 	setCustomPickersAndRunPickers("open_git_pickers")
 end, { desc = "Git Open remote" })
 map("n", "<leader>fZ", "<cmd>FindConfig<CR>", { desc = "Find Config files" })
+
+-- ===========================================
 -- =============  GIT =============================
 -- ===============================================
 --
@@ -256,6 +248,7 @@ map("n", "<leader>fZ", "<cmd>FindConfig<CR>", { desc = "Find Config files" })
 -- ===============================
 -- not work when inside tumx even no keys mapped ??
 -- map('n', '<C-S-j>', function()
+
 function gitsigns_jump_next_hunk()
 	if vim.wo.diff then
 		return "[c"
@@ -351,7 +344,8 @@ map("n", "<leader>gds", ":Gdiffsplit<CR>", { desc = "S Diff" })
 map("n", "<leader>gdm", ':Gitsigns diffthis "~"<CR>', { desc = "Diff master" })
 map("n", "<leader>gbc", ":Telescope git_bcommits<cr>", { silent = true, desc = "Git BCommits" })
 map("n", "<leader>gbr", ":Telescope git_branches<cr>", { silent = true, desc = "Git Branches" })
-map("n", "<leader>gl", ":Git log<cr>", { silent = true, desc = "Git Log" })
+map("n", "<leader>gl", ":GlLog!<cr>", { silent = true, desc = "Git Log" })
+map("n", "<leader>gL", ":Git log<cr>", { silent = true, desc = "Git Log" })
 map("n", "<leader>gp", ":Git push<cr>", { silent = true, desc = "Git Push" })
 map("n", "<leader>gr", ":Gitsigns reset_hunk<cr>", { silent = true, desc = "Git Reset Hunk" })
 map("v", "<leader>gr", ":Gitsigns reset_hunk<cr>", { silent = true, desc = "Git Reset Hunk" })
@@ -375,10 +369,12 @@ map("n", "<leader>gbl", ":Gitsigns toggle_current_line_blame<cr>", { silent = tr
 map("n", "<leader>gbL", ":Git blame<cr>", { silent = true, desc = "Git Blame" })
 map("n", "<leader>gbb", ":Git blame<cr>", { silent = true, desc = "Git Blame" })
 -- Gitsigns diffthis
---
--- ====================
--- Custom commands
--- ====================
+
+
+
+-- ===========================
+-- Custom commands ====================
+-- =======================
 
 local function rename_buffer()
     local old_name = vim.fn.expand("%")
