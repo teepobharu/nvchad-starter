@@ -11,6 +11,7 @@
     - [ ] Improve telescope git files an grep
     - [ ] Lazygit and dotfiles 
         - https://github.com/jesseduffield/lazygit/discussions/1201#discussioncomment-2546527 
+        - enable file : https://github.com/kdheepak/lazygit.nvim/issues/22#issuecomment-1815426074
 -  LSP
     - jsx comment not correct 
     - [x] Omnisharp dotnet setup 
@@ -46,24 +47,38 @@ Features
 - Cleaner settings on telescope help see
 - Find with Telescope f cleaner
 - Testing (l-t) ??  - how it works ?
+- inline diagnostics 
 - Notificaiton
 
 Not have
-- gx open link 
+- gx open link (+ plugin)
+- resize Windows
+- Sessions saved 
 
 
 Packages use
 - mason-lsp 
 - toggleterm
 - neo-tree 
-= mini{pairs,comment}
+- mini{pairs,comment}
+- flash ( jump and select scope (S-f-F))
+
+
+Migration idea
+- lazygit install 
+- keymap import  before (not to conflict)
+- Fugitive setup + git root support 
+- Session save and start page correct
+- neotree key settings change filter not to change when type 
+- check keymap lazygit configure : https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
+- disable hardtime 
 
 
 Some keys 
 - C+/ toggle terminal 
 
-
 ### Windows 
+
 
 | Key            | Description          |
 | -------------- | -----------          |
