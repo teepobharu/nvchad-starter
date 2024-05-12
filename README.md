@@ -244,6 +244,17 @@ plugin: https://www.youtube.com/watch?v=jrFjtwm-R94&ab_channel=NerdSignals
 
 https://github.com/CopilotC-Nvim/CopilotChat.nvim
 
+Copilot Chat
+
+
+| Key        | Description                                   |
+| ---------- | ----------                                    |
+| <leader>a  | toggle commands
+| - m/M      | get commit message from current diff / staged |
+| <enter>    | continue question enter chat                  |
+
+ 
+
 ## Keyboards
 
 ### Views
