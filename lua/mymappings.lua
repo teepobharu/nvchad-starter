@@ -19,7 +19,6 @@ map("n", "<M-Tab>", ":tabnext<CR>", { noremap = true, silent = true })
 -- H and L to change buffer 
 map("n", "H", ":bp<CR>", { desc = "Previous Buffer", silent = true })
 map("n", "L", ":bn<CR>", { desc = "Next Buffer", silent = true })
-
 --
 -- -- HANDLE tab cmp completion in lua : https://github.com/nanotee/nvim-lua-guide#tips-4
 -- command completion in command line mode

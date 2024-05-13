@@ -72,6 +72,9 @@ Migration idea
 - neotree key settings change filter not to change when type 
 - check keymap lazygit configure : https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 - disable hardtime 
+- zoxide setup
+(Optional)
+- git open branch url telescope 
 
 
 Some keys 
