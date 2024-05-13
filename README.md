@@ -52,8 +52,11 @@ Features
 
 Not have
 - gx open link (+ plugin)
-- resize Windows
-- Sessions saved 
+- Key maps 
+    - resize Windows
+    - Sessions saved 
+    - tab change ( or use gT ? )
+    - custom Cds , and copy file - or not ?
 
 
 Packages use
@@ -66,12 +69,12 @@ Packages use
 
 Migration idea
 - lazygit install 
+- disable hardtime ? 
 - keymap import  before (not to conflict)
 - Fugitive setup + git root support 
 - Session save and start page correct
 - neotree key settings change filter not to change when type 
 - check keymap lazygit configure : https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
-- disable hardtime 
 - zoxide setup
 (Optional)
 - git open branch url telescope 
@@ -162,13 +165,14 @@ Tables plugin  (manual enabled)
 
 ### Git
 
-| Key            | Description            |
-| -------------- | -----------            |
-| C-A-j/k        | Next Hunk              |
-| ]c, [c         | Next Hunk              |
-| <leader> gb    | Git Blame              |
-| - l            | Blame Line             |
-| - c            | Blame commit Telescope |
+Telescope 
+| Key            | Description                 |
+| -------------- | -----------                 |
+| C-A-j/k        | Next Hunk                   |
+| ]c, [c         | Next Hunk                   |
+| <leader>gbc    | See files                   |
+| - enter        | apply commit change to file |
+| - split             | compare                     | 
 
 
 Fugitive 
@@ -176,25 +180,29 @@ Fugitive
 
 Status View
 
-| Key        | Description    |
-| ---        | -----------    |
-| <leader>gz | see git status |
-| = / >      | see diff       |
-| J/K        | next hunk      |
-| ( ) \ i    | next file      |
-| ]m         | collapse ]
-| I          | patch mode     |
-
-| X            | discard under cursor  |
-| G            | Git Status            |
+| Key        | Description          |
+| ---        | -----------          |
+| <leader>gz | see git status       |
+| = / > \ <  | expand toggle diff   |
+| J/K        | next hunk            |
+| I          | patch mode           |
+| X          | discard under cursor |
+| G          | Git Status           |
 
 Commit / Files View
 
-| Key                  | Description              |
-| ---                  | -----------              |
-| :Gclog               | See clean commit message |
-| <enter> / o / go / O | open file / split        |
-| C                    | go to commit of the file |
+| Key                  | Description                |
+| ---                  | -----------                |
+| :Gclog               | See clean commit message   |
+| :Gclog -- %          | see commit of currnt file  |
+| g?                   | help                       |
+| gq                   | quit blame / menu          |
+| <leader> gb | Git Blame              |
+| - l         | Blame Line             |
+| - c         | Blame commit Telescope |
+| - L       | see commit with blame info |
+| C                    | go to commit of the file   |
+| <enter> / o / go / O | open file / split          |
 
 
 
