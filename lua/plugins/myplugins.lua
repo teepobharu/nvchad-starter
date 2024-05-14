@@ -1,8 +1,6 @@
 local overrides = require("configs.overrides")
-local vkey = vim.keymap
-local utils = require("utils")
+local myutils = require("myutils")
 -- vim.g.maplocalleader = ","
-local key_opts = { noremap = true, silent = true }
 local map = vim.keymap.set
 
 -- local function combined_dict(dict1, dict2)
@@ -32,40 +30,8 @@ local plugins = {
 		-- maximum productivity with git and diff =  https://www.youtube.com/watch?v=57x4ZzzCr2Y&ab_channel=SeniorMars
 		-- source code : https://github.com/SeniorMars/dotfiles/blob/master/.config/nvim/init.lua#L962
 	},
-	{
-		"mhinz/vim-startify",
-		lazy = false,
-		config = function()
-			require("configs.startify")
-			map("n", "<localleader>,", "<cmd>Startify<cr>", utils.combine_dicts({}, key_opts, { desc = "Startify" }))
-			map("n", "<leader>,", "<cmd>Startify<cr>", utils.combine_dicts({}, key_opts, { desc = "Startify" }))
-		end,
-	},
-	{
-		"folke/which-key.nvim",
-		-- nvchad: https://github.com/NvChad/NvChad/blob/178bf21fdef6679ea70af3f6e45b1c1e6ed8e8a6/lua/nvchad/plugins/ui.lua#L76
-		init = function()
-			vim.o.timeout = true
-			vim.o.timeoutlen = 300
-		end,
-		-- opts = function(plugin)
-		-- config = {
-		--   default = config.mapping()
-		-- }
-		-- return config.mapping()
-		-- end,
-		config = function(_, opts)
-			local wk = require("which-key")
-			wk.setup(opts)
-			wk.register({
-				["<leader>g"] = { "~Git" },
-				["<leader>m"] = { "m mapping" },
-				["<leader>n"] = { name = "MY custom commands" },
-			})
-		end,
-		-- keys = { "<localleader>"},
-		-- keys = {  "<localleader>", "<leader>", '"', "'", "`", "c", "v", "g" },
-	},
+	{},
+	{},
 	{
 		"justinmk/vim-sneak",
 		lazy = true,
@@ -129,7 +95,7 @@ local plugins = {
 		--        }
 		--        -- merge ensure_install key
 
-		--         config.ensure_installed = utils.combineUniqueLists(config.ensure_installed, ensure_installed);
+		--         config.ensure_installed = myutils.combineUniqueLists(config.ensure_installed, ensure_installed);
 		--         print(config)
 		--         return config
 		--     end,
@@ -168,92 +134,33 @@ local plugins = {
 		end,
 	},
 	{
-		"hrsh7th/nvim-cmp",
-		-- https://github.com/NvChad/NvChad/issues/2332
-		-- sample config : https://github.com/hrsh7th/nvim-cmp/issues/1142#issuecomment-1355279953
-		opts = function()
-			local cmp = require("cmp")
-			local cmp_conf = require("nvchad.configs.cmp")
-			-- table.insert(cmp_conf.sources, { name = "copilot"})
-			--       table.insert(cmp_conf.mapping, {
-			--         ["<C-j>"] = cmp.mapping.select_next_item(),
-			--         ["<C-k>"] = cmp.mapping.select_prev_item(),
-			--         ["<Esc>"] = cmp.mapping.abort(),
-			-- })
-			-- merge mapping deep by copilot
-			cmp_conf.mapping = utils.combine_dicts({ behavior = "force" }, cmp_conf.mapping, {
-				["<C-j>"] = cmp.mapping.select_next_item(),
-				["<C-k>"] = cmp.mapping.select_prev_item(),
-				["<C-n>"] = cmp.mapping.scroll_docs(4),
-				["<C-p>"] = cmp.mapping.scroll_docs(-4),
-				["<Esc>"] = cmp.mapping.abort(),
-				["<C-Space>"] = (function()
-					if cmp.visible() then
-						cmp.abort()
-					else
-						cmp.complete({ reason = cmp.ContextReason.Auto })
-					end
-				end),
-				["<Tab>"] = cmp.mapping(function(fallback)
-					if cmp.visible() then
-						cmp.select_next_item()
-					elseif require("luasnip").expand_or_jumpable() then
-						vim.fn.feedkeys(
-							vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true),
-							""
-						)
-					else
-						fallback()
-					end
-				end, {
-					"i",
-					"s",
-				}),
-				["<S-Tab>"] = cmp.mapping(function(fallback)
-					if cmp.visible() then
-						cmp.select_prev_item()
-					elseif require("luasnip").jumpable(-1) then
-						vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
-					else
-						fallback()
-					end
-				end, {
-					"i",
-					"s",
-				}),
-			})
-			return cmp_conf
-		end,
-		--
-	},
-    {
 		"github/copilot.vim",
-        event = "VeryLazy",
+		event = "VeryLazy",
 		config = function()
-            vim.g["copilot_no_tab_map"] = true
-            -- enable copilot for specific filetypes
-            vim.g.copilot_filetypes = {
-                ["TelescopePrompt"] = false,
-            }
-            -- sample config: https://github.com/jellydn/lazy-nvim-ide/blob/main/lua/plugins/extras/copilot-vim.lua
-            -- Setup keymaps
-            local keymap = vim.keymap.set
-            local opts = { silent = true }
+			vim.g["copilot_no_tab_map"] = true
+			-- enable copilot for specific filetypes
+			vim.g.copilot_filetypes = {
+				["TelescopePrompt"] = false,
+			}
+			-- sample config: https://github.com/jellydn/lazy-nvim-ide/blob/main/lua/plugins/extras/copilot-vim.lua
+			-- Setup keymaps
+			local keymap = vim.keymap.set
+			local opts = { silent = true }
 
-            keymap("i", "<C-o>", 'copilot#Accept("\\<CR>")', { expr = true, replace_keycodes = false })
-            -- Set <C-y> to accept copilot suggestion
-            keymap("i", "<C-y>", 'copilot#Accept("\\<CR>")', { expr = true, replace_keycodes = false })
+			keymap("i", "<C-o>", 'copilot#Accept("\\<CR>")', { expr = true, replace_keycodes = false })
+			-- Set <C-y> to accept copilot suggestion
+			keymap("i", "<C-y>", 'copilot#Accept("\\<CR>")', { expr = true, replace_keycodes = false })
 
-            -- Set <C-i> to accept line
-            keymap("i", "<C-i>", "<Plug>(copilot-accept-line)", opts)
+			-- Set <C-i> to accept line
+			keymap("i", "<C-i>", "<Plug>(copilot-accept-line)", opts)
 
-            -- Set <C-j> to next suggestion, <C-k> to previous suggestion, <C-l> to suggest
-            keymap("i", "<C-j>", "<Plug>(copilot-next)", opts)
-            keymap("i", "<C-k>", "<Plug>(copilot-previous)", opts)
-            keymap("i", "<C-l>", "<Plug>(copilot-suggest)", opts)
+			-- Set <C-j> to next suggestion, <C-k> to previous suggestion, <C-l> to suggest
+			keymap("i", "<C-j>", "<Plug>(copilot-next)", opts)
+			keymap("i", "<C-k>", "<Plug>(copilot-previous)", opts)
+			keymap("i", "<C-l>", "<Plug>(copilot-suggest)", opts)
 
-            -- Set <C-d> to dismiss suggestion
-            keymap("i", "<C-d>", "<Plug>(copilot-dismiss)", opts)
+			-- Set <C-d> to dismiss suggestion
+			keymap("i", "<C-d>", "<Plug>(copilot-dismiss)", opts)
 		end,
 
 		keys = {
@@ -341,7 +248,7 @@ local plugins = {
 		opts = function()
 			local opts = require("nvchad.configs.telescope")
 			local defaultOverride = overrides.telescope.getOptions()
-			opts.extensions_list = utils.combineUniqueLists(opts.extensions_list, { "zoxide", "ui-select" })
+			opts.extensions_list = myutils.combineUniqueLists(opts.extensions_list, { "zoxide", "ui-select" })
 
 			opts.defaults = vim.tbl_deep_extend("force", opts.defaults, defaultOverride)
 

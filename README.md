@@ -119,6 +119,12 @@ Nvim Tree
 | y     | Copy file name (with ext) |
 | ge    | copy base name (no ext)   |
 
+CDs 
+
+| Key            | Description               |
+| ---            | -----------               |
+| <leader>cd     | Change dir zoxide plugins |
+| <localleader>c | Change dir current file   |
 
 Config file settings / debug
 
@@ -140,6 +146,12 @@ Config file settings / debug
 | <leader> fm | Format whole file                    |
 | <leader> fF | Toggle Format on Save Buff(!)/Global |
 
+#### Refactoring 
+
+1. Telescope select with tab + C+Q > send to quicklist 
+2. :copen to see the list 
+3. :cfdo %s/old/new/g | update  (use c flag substitude to make sure its correct)
+
 
 `Markdown` - manual enable on md files table mode auto format when type the  
 Tables plugin  (manual enabled)
@@ -158,9 +170,11 @@ Tables plugin  (manual enabled)
 | Key            | Description            |
 | -------------- | -----------            |
 | _ft            | Find Telescope pickers |
+|  quick fix history |  (C-q) retrieve again | 
 | _ff            | Find Files             |
 | _fh            | Help Pages             |
 | _fb            | Buffers                |
+| 
 
 
 ### Git

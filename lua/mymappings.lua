@@ -16,9 +16,12 @@ local overrides = require("configs.overrides")
 map("n", "<leader>h", ":sp<CR>", { desc = "HSplit", silent = true })
 map("n", "<leader>v", ":vs<CR>", { desc = "VSplit", silent = true })
 map("n", "<M-Tab>", ":tabnext<CR>", { noremap = true, silent = true })
--- H and L to change buffer 
+-- H and L to change buffer
 map("n", "H", ":bp<CR>", { desc = "Previous Buffer", silent = true })
 map("n", "L", ":bn<CR>", { desc = "Next Buffer", silent = true })
+map("n", ";", ":", { desc = "CMD enter command mode" })
+map("i", "jk", "<ESC>", { desc = "Escape insert mode" })
+
 --
 -- -- HANDLE tab cmp completion in lua : https://github.com/nanotee/nvim-lua-guide#tips-4
 -- command completion in command line mode
@@ -44,48 +47,47 @@ map("n", "<Left>", "<cmd>vertical resize -2<CR>", opts)
 map("n", "<Right>", "<cmd>vertical resize +2<CR>", opts)
 
 local function toggle_fold_or_clear_highlight()
-    if vim.fn.foldlevel('.') > 0 then
-        vim.api.nvim_input('za')
-    else
-        vim.cmd('nohlsearch')
-    end
+	if vim.fn.foldlevel(".") > 0 then
+		vim.api.nvim_input("za")
+	else
+		vim.cmd("nohlsearch")
+	end
 end
-map('n', '<Esc>', toggle_fold_or_clear_highlight, { expr = true, silent = true, noremap = true })
+map("n", "<Esc>", toggle_fold_or_clear_highlight, { expr = true, silent = true, noremap = true })
 
 -- Terminal ==================
 vim.api.nvim_create_user_command("OpenTerminalInSplitWithCwd", function()
-  local cwd = vim.fn.expand('%:p:h')
+	local cwd = vim.fn.expand("%:p:h")
 
-  vim.api.nvim_command('split | lcd ' .. cwd .. ' | terminal')
+	vim.api.nvim_command("split | lcd " .. cwd .. " | terminal")
 end, {})
 map("n", "<Leader>t.", ":OpenTerminalInSplitWithCwd<CR>", { noremap = true, silent = true })
-
 
 -- =========================
 -- Editing =====================
 -- =========================
 
 -- Duplicate line and preserve previous yank register
-map('n', '<A-d>', function()
-    local saved_unnamed = vim.fn.getreg('"')
-    local saved_unnamedplus = vim.fn.getreg('+')
-    local current_line = vim.fn.getline('.')
-    -- Save previous yank registers in a safe place
-    -- propmt inform to choose reg to save 
-    -- print("Choose register to save")
-    -- local temp_register = vim.fn.nr2char(vim.fn.getchar()) -- choose char 
-    local temp_register = 'm'
-    vim.fn.setreg(temp_register, saved_unnamed, 'a')
-    vim.fn.setreg('"', current_line, 'a')
-    vim.fn.setreg('+', current_line, 'a')
-    -- Duplicate the current line
-    -- vim.cmd('normal! yyp')
-    vim.api.nvim_input('yyp')
-    -- Restore previous yank registers
-    vim.fn.setreg('"', saved_unnamed, 'a')
-    vim.fn.setreg('+', saved_unnamedplus, 'a')
-    vim.fn.setreg(temp_register, '', 'a')
-end, { desc = 'Duplicate line and preserve yank register' })
+map("n", "<A-d>", function()
+	local saved_unnamed = vim.fn.getreg('"')
+	local saved_unnamedplus = vim.fn.getreg("+")
+	local current_line = vim.fn.getline(".")
+	-- Save previous yank registers in a safe place
+	-- propmt inform to choose reg to save
+	-- print("Choose register to save")
+	-- local temp_register = vim.fn.nr2char(vim.fn.getchar()) -- choose char
+	local temp_register = "m"
+	vim.fn.setreg(temp_register, saved_unnamed, "a")
+	vim.fn.setreg('"', current_line, "a")
+	vim.fn.setreg("+", current_line, "a")
+	-- Duplicate the current line
+	-- vim.cmd('normal! yyp')
+	vim.api.nvim_input("yyp")
+	-- Restore previous yank registers
+	vim.fn.setreg('"', saved_unnamed, "a")
+	vim.fn.setreg("+", saved_unnamedplus, "a")
+	vim.fn.setreg(temp_register, "", "a")
+end, { desc = "Duplicate line and preserve yank register" })
 
 -- " Copy to system clipboard
 -- vnoremap <leader>y "+y
@@ -187,19 +189,18 @@ end
 -- =======================================
 -- Telescope helper functions
 local function is_git_repo()
-    vim.fn.system("git rev-parse --is-inside-work-tree")
+	vim.fn.system("git rev-parse --is-inside-work-tree")
 
-    return vim.v.shell_error == 0
+	return vim.v.shell_error == 0
 end
 
 local function get_git_root()
-    local dot_git_path = vim.fn.finddir(".git", ".;")
-    return vim.fn.fnamemodify(dot_git_path, ":h")
+	local dot_git_path = vim.fn.finddir(".git", ".;")
+	return vim.fn.fnamemodify(dot_git_path, ":h")
 end
 
-
 function live_grep_from_project_git_root()
-    local opts = {}
+	local opts = {}
 	if is_git_repo() then
 		opts = {
 			cwd = get_git_root(),
@@ -208,19 +209,19 @@ function live_grep_from_project_git_root()
 	require("telescope.builtin").live_grep(opts)
 end
 
-vim.api.nvim_create_user_command(
-    'FindConfig',
-    function ()
-    -- https://github.com/nvim-telescope/telescope.nvim/wiki/Configuration-Recipes#having-a-factory-like-function-based-on-a-dict - configure factory like dict differenet find cmds
-    -- if current path is ~ only limit to depth = 1  with prompt = find HOME files include hidden files and folders 
-        if vim.fn.getcwd() == vim.fn.expand("~") then
-            require('telescope.builtin').find_files({prompt_title = "Find $HOME files", cwd="~", find_command = {'fd', '--type', 'f', '--hidden', '--max-depth', '1'}})
-            return
-        end
-        require('telescope.builtin').find_files({prompt_title = "Find .Config files", cwd="~/.config"})
-    end,
-{})
-
+vim.api.nvim_create_user_command("FindConfig", function()
+	-- https://github.com/nvim-telescope/telescope.nvim/wiki/Configuration-Recipes#having-a-factory-like-function-based-on-a-dict - configure factory like dict differenet find cmds
+	-- if current path is ~ only limit to depth = 1  with prompt = find HOME files include hidden files and folders
+	if vim.fn.getcwd() == vim.fn.expand("~") then
+		require("telescope.builtin").find_files({
+			prompt_title = "Find $HOME files",
+			cwd = "~",
+			find_command = { "fd", "--type", "f", "--hidden", "--max-depth", "1" },
+		})
+		return
+	end
+	require("telescope.builtin").find_files({ prompt_title = "Find .Config files", cwd = "~/.config" })
+end, {})
 
 -- Telescope custom pickers
 map("n", "<leader>fs", function()
@@ -283,7 +284,8 @@ vim.cmd([[
   " Support worktree bare repo: https://github.com/tpope/vim-fugitive/issues/1841
   function! s:SetGitDir() abort
   " Check if Fugitive is loaded
-  if !exists(':Git')
+  " Also check if it was terminal buffer 
+  if !exists(':Git') || &buftype ==# 'terminal'
   return
   endif
 
@@ -369,24 +371,22 @@ map("n", "<leader>gbL", ":Git blame<cr>", { silent = true, desc = "Git Blame" })
 map("n", "<leader>gbb", ":Git blame<cr>", { silent = true, desc = "Git Blame" })
 -- Gitsigns diffthis
 
-
-
 -- ===========================
 -- Custom commands ====================
 -- =======================
 
 local function rename_buffer()
-    local old_name = vim.fn.expand("%")
-    local new_name = vim.fn.input("Enter new buffer name: ", old_name)
+	local old_name = vim.fn.expand("%")
+	local new_name = vim.fn.input("Enter new buffer name: ", old_name)
 
-    -- If user provided a new name and it's different from the old name
-    if new_name ~= '' and new_name ~= old_name then
-        -- Rename the buffer
-        vim.api.nvim_buf_set_name(0, new_name)
-        print("Buffer renamed to " .. new_name)
-    else
-        print("Buffer not renamed.")
-    end
+	-- If user provided a new name and it's different from the old name
+	if new_name ~= "" and new_name ~= old_name then
+		-- Rename the buffer
+		vim.api.nvim_buf_set_name(0, new_name)
+		print("Buffer renamed to " .. new_name)
+	else
+		print("Buffer not renamed.")
+	end
 end
 
 map("n", "<leader>n", "", { desc = "+CustomCommands" })
@@ -397,7 +397,7 @@ map("n", "<leader>S", "<cmd>SSave<CR>", { desc = "Save Session" })
 -- copy relative filepath name
 map("n", "<leader>nf", ":let @+=@%<CR>", { desc = "Copy relative filepath name" })
 -- Bind a key to invoke the renaming function
-map('n', '<leader>nr', rename_buffer, { desc = "Rename Buffer", noremap = true, silent = true })
+map("n", "<leader>nr", rename_buffer, { desc = "Rename Buffer", noremap = true, silent = true })
 -- copy absolute filepath
 map("n", "<leader>nF", ':let @+=expand("%:p")<CR>', { desc = "Copy absolute filepath" })
 local function show_messages_window()
@@ -449,9 +449,8 @@ end
 map("n", "gx", function()
 	-- fallback to send gx if not a link or file
 	vim.fn.jobstart({ open_command, url_repo() }, { detach = true }) -- not work in tmux
-  -- print("!" .. open_command .. " " .. url_repo())
+	-- print("!" .. open_command .. " " .. url_repo())
 	-- vim.cmd("!" .. open_command .. " " .. url_repo())
-
 end, { silent = true, desc = "Open url" })
 
 map("n", "<Leader>nx", function()
