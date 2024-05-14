@@ -52,5 +52,20 @@ return { -- https://github.com/NvChad/NvChad/blob/v2.5/lua/nvchad/plugins/init.l
 		map("", "<leader>fm", function()
 			require("conform").format()
 		end, { desc = "File Format with conform" })
+
+		map("n", "<leader>fm", function()
+			require("conform").format()
+		end, { desc = "Conform Format in Normal mode" })
+
+		map("v", "<leader>fm", function()
+			vim.lsp.buf.format({
+				async = true,
+				range = {
+
+					["start"] = vim.api.nvim_buf_get_mark(0, "<"),
+					["end"] = vim.api.nvim_buf_get_mark(0, ">"),
+				},
+			})
+		end, { desc = "LSP Format in Visual mode" })
 	end,
 }
