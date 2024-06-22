@@ -153,7 +153,7 @@ map("v", "//", "y/\\V<C-R>=escape(@\",'/\\')<CR><CR>", { desc = "Search selected
 -- TELESCOPE ---
 --==========================
 map("n", "<leader>ft", "<cmd>Telescope<CR>", { desc = "Telescope" })
-map("n", "<leader>e", "<cmd>Telescope buffers<CR>", { desc = "Telescope Buffers" })
+map("n", "<leader>,", "<cmd>Telescope buffers<CR>", { desc = "Telescope Buffers" })
 map("n", "<leader>fr", function()
 	require("telescope.builtin").lsp_references()
 end, { desc = "LSP Find References" })
